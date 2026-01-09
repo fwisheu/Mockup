@@ -1,43 +1,60 @@
-// Startzeit messen
+// -------------------------
+// 1. Startzeit messen
+// -------------------------
 const startTime = Date.now();
 
-// Condition aus URL lesen
-const params = new URLSearchParams(window.location.search);
-const condition = params.get("condition") || "control";
-
+// -------------------------
+// 2. Condition anzeigen (nur Test!)
+// -------------------------
 document.getElementById("condition-info").textContent =
-  "Condition: " + condition;
+  `AI: ${EXP.ai ? 1 : 0}, High Price: ${EXP.hprice ? 1 : 0}`;
 
-// Dummy-Ergebnisse
-const results = [
-  { id: "h1", name: "Hotel Alpha", price: 120 },
-  { id: "h2", name: "Hotel Beta", price: 95 },
-  { id: "h3", name: "Hotel Gamma", price: 140 }
+// -------------------------
+// 3. Basis-Daten (neutral)
+// -------------------------
+const hotels = [
+  { id: "h1", name: "Hotel Alpha", basePrice: 100 },
+  { id: "h2", name: "Hotel Beta",  basePrice: 90  },
+  { id: "h3", name: "Hotel Gamma", basePrice: 110 }
 ];
 
-// Ergebnisse rendern
+// -------------------------
+// 4. Preis-Manipulation
+// -------------------------
+hotels.forEach(hotel => {
+  hotel.price = EXP.hprice
+    ? Math.round(hotel.basePrice * 1.3)  // High-Price-Condition
+    : hotel.basePrice;                   // Control
+});
+
+// -------------------------
+// 5. Rendern + AI-Manipulation
+// -------------------------
 const list = document.getElementById("results-list");
 
-results.forEach(hotel => {
+hotels.forEach(hotel => {
   const li = document.createElement("li");
+
   li.textContent = `${hotel.name} – ${hotel.price} €`;
-  li.dataset.id = hotel.id;
 
-li.addEventListener("click", () => {
-  const duration = Date.now() - startTime;
+  // AI-Manipulation
+  if (EXP.ai) {
+    li.textContent += " 🤖 Empfohlen";
+  }
 
-  redirectToQualtrics(hotel.id, duration);
-});
+  li.addEventListener("click", () => {
+    const duration = Date.now() - startTime;
+    redirectToQualtrics(hotel.id, duration);
+  });
 
   list.appendChild(li);
 });
 
-// Weiter-Button (später Qualtrics)
-document.getElementById("continue-btn").addEventListener("click", () => {
-  alert("Weiter zur Umfrage");
-});
-
+// -------------------------
+// 6. Redirect zu Qualtrics
+// -------------------------
 function redirectToQualtrics(choice, time) {
+
   const qualtricsUrl =
     "https://lmubwl.eu.qualtrics.com/jfe/form/SV_di0S93IFjvdDiCy";
 
@@ -45,7 +62,8 @@ function redirectToQualtrics(choice, time) {
     `${qualtricsUrl}` +
     `?choice=${choice}` +
     `&time=${time}` +
-    `&condition=${condition}`;
+    `&ai=${EXP.ai ? 1 : 0}` +
+    `&hprice=${EXP.hprice ? 1 : 0}`;
 
   window.location.href = redirectUrl;
 }
