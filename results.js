@@ -39,7 +39,7 @@ document.getElementById("continue-btn").addEventListener("click", () => {
 
 function redirectToQualtrics(choice, time) {
   const qualtricsUrl =
-    "https://QUALTRICS-LINK-HIER-EINSETZEN";
+    "https://lmubwl.eu.qualtrics.com/jfe/form/SV_di0S93IFjvdDiCy";
 
   const redirectUrl =
     `${qualtricsUrl}` +
