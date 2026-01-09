@@ -1,8 +1,10 @@
+// Startzeit messen
+const startTime = Date.now();
+
 // Condition aus URL lesen
 const params = new URLSearchParams(window.location.search);
 const condition = params.get("condition") || "control";
 
-// Anzeige der Condition (nur für Testzwecke)
 document.getElementById("condition-info").textContent =
   "Condition: " + condition;
 
