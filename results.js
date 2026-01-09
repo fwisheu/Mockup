@@ -23,11 +23,11 @@ results.forEach(hotel => {
   li.textContent = `${hotel.name} – ${hotel.price} €`;
   li.dataset.id = hotel.id;
 
-  li.addEventListener("click", () => {
-    alert(
-      `Auswahl: ${hotel.id}\nCondition: ${condition}`
-    );
-  });
+li.addEventListener("click", () => {
+  const duration = Date.now() - startTime;
+
+  redirectToQualtrics(hotel.id, duration);
+});
 
   list.appendChild(li);
 });
@@ -36,3 +36,16 @@ results.forEach(hotel => {
 document.getElementById("continue-btn").addEventListener("click", () => {
   alert("Weiter zur Umfrage");
 });
+
+function redirectToQualtrics(choice, time) {
+  const qualtricsUrl =
+    "https://QUALTRICS-LINK-HIER-EINSETZEN";
+
+  const redirectUrl =
+    `${qualtricsUrl}` +
+    `?choice=${choice}` +
+    `&time=${time}` +
+    `&condition=${condition}`;
+
+  window.location.href = redirectUrl;
+}
