@@ -58,10 +58,13 @@ function redirectToQualtrics(choice, time) {
   const qualtricsUrl =
     "https://lmubwl.eu.qualtrics.com/jfe/form/SV_di0S93IFjvdDiCy";
 
+  const separator = qualtricsUrl.includes("?") ? "&" : "?";
+
   const redirectUrl =
-    `${qualtricsUrl}` +
-    `?choice=${choice}` +
-    `&time=${time}` +
+    qualtricsUrl +
+    separator +
+    `choice=${encodeURIComponent(choice)}` +
+    `&time=${encodeURIComponent(time)}` +
     `&ai=${EXP.ai ? 1 : 0}` +
     `&hprice=${EXP.hprice ? 1 : 0}`;
 
