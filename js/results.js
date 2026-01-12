@@ -45,27 +45,50 @@ hotels.forEach(hotel => {
 // =========================
 // 5. Ergebnisse rendern (ai)
 // =========================
-const list = document.getElementById("results-list");
+function renderHotels(list) {
+  const container = document.getElementById("results-list");
+  container.innerHTML = ""; // Reset
 
-hotels.forEach(hotel => {
+  list.forEach(hotel => {
+    const div = document.createElement("div");
+    div.classList.add("hotel-item");
 
-  const li = document.createElement("li");
+    let html = `
+      <span class="hotel-name">${hotel.name}</span>
+      <span class="hotel-price">${hotel.price} €</span>
+    `;
 
-  let text = `${hotel.name} – ${hotel.price} €`;
+    if (STUDY.factors.ai) {
+      html += `<span class="hotel-ai">🤖 Empfohlen</span>`;
+    }
 
-  if (STUDY.factors.ai) {
-    text += " 🤖 Empfohlen";
+    div.innerHTML = html;
+
+    div.addEventListener("click", () => {
+      const duration = Date.now() - startTime;
+      redirectToQualtrics(hotel.id, duration);
+    });
+
+    container.appendChild(div);
+  });
+}
+
+const sortSelect = document.getElementById("sort-select");
+
+sortSelect.addEventListener("change", () => {
+  let sortedHotels = [...hotels];
+
+  if (sortSelect.value === "price-asc") {
+    sortedHotels.sort((a, b) => a.price - b.price);
+  } else if (sortSelect.value === "price-desc") {
+    sortedHotels.sort((a, b) => b.price - a.price);
   }
 
-  li.textContent = text;
-
-  li.addEventListener("click", () => {
-    const duration = Date.now() - startTime;
-    redirectToQualtrics(hotel.id, duration);
-  });
-
-  list.appendChild(li);
+  renderHotels(sortedHotels);
 });
+
+// Initial render
+renderHotels(hotels);
 
 
 // =========================
