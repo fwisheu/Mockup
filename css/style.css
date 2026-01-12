@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f9f9f9;
+}
+
+.hotel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0;
+}
+
+.hotel-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.hotel-item:hover {
+  transform: scale(1.02);
+}
+
+.hotel-name {
+  font-weight: bold;
+}
+
+.hotel-price {
+  color: #0071c2;
+  font-weight: bold;
+}
+
+.hotel-ai {
+  margin-left: 10px;
+  color: green;
+  font-weight: bold;
+}
