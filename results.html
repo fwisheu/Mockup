@@ -6,12 +6,24 @@
 </head>
 <body>
 
-  <h1>Suchergebnisse</h1>
+ <h1>Suchergebnisse</h1>
 
-  <!-- Nur für Pretests / Debug -->
-  <p id="condition-info"></p>
+<!-- Optional Debug -->
+<p id="condition-info"></p>
 
-  <ul id="results-list"></ul>
+<!-- Filter / Sort -->
+<div id="controls">
+  <label>
+    Sortiere nach:
+    <select id="sort-select">
+      <option value="price-asc">Preis ↑</option>
+      <option value="price-desc">Preis ↓</option>
+    </select>
+  </label>
+</div>
+
+<!-- Hotel Liste -->
+<div id="results-list" class="hotel-list"></div>
 
   <script src="js/config.js"></script>
   <script src="js/hotel-data.js"></script>
