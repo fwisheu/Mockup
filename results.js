@@ -53,7 +53,7 @@ hotels.forEach(hotel => {
 // -------------------------
 // 6. Redirect zu Qualtrics
 // -------------------------
-function redirectToQualtrics(choice, time) {
+function redirectToQualtrics(choice, time, ai, hprice) {
 
   const qualtricsUrl =
     "https://lmubwl.eu.qualtrics.com/jfe/form/SV_di0S93IFjvdDiCy";
