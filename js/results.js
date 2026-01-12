@@ -5,6 +5,18 @@ const startTime = Date.now();
 
 
 // =========================
+// Utility: Shuffle Array
+// =========================
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+
+// =========================
 // 2. Condition-Info (nur Debug / Pretest)
 // =========================
 const conditionInfo = document.getElementById("condition-info");
@@ -15,13 +27,9 @@ if (conditionInfo) {
 
 
 // =========================
-// 3. Basis-Hoteldaten
+// 3. Hoteldaten laden & randomisieren
 // =========================
-const hotels = [
-  { id: "h1", name: "Hotel Alpha", basePrice: 100 },
-  { id: "h2", name: "Hotel Beta",  basePrice: 90  },
-  { id: "h3", name: "Hotel Gamma", basePrice: 110 }
-];
+const hotels = shuffle([...HOTEL_DATA]);
 
 
 // =========================
