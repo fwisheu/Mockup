@@ -11,7 +11,7 @@ body {
 #results-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
-  margin-top: 20px;
+  margin-top: 12px;
   gap: 24px;
   align-items: start;
 }
@@ -28,7 +28,7 @@ body {
 ========================= */
 #filters {
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 12px;
   background: #fafafa;
   position: sticky;
@@ -99,7 +99,8 @@ body {
   flex-direction: column;
   justify-content: space-between; /* Header oben, Footer unten */
   flex: 1;
-  margin-left: 12px;              /* Abstand zum Bild */
+  padding: 4px;
+  margin-left: 8px;              /* Abstand zum Bild */
 }
 
 .hotel-header {
@@ -145,18 +146,17 @@ body {
 }
 
 #search-header {
-  background-color: #3f6fb3;   /* etwas dezenter als vorher */
+  background-color: #204881;   /* etwas dezenter als vorher */
   color: #ffffff;
-
-  padding: 10px 24px 12px 24px; /* kompakter, oben näher */
-  margin: 0;                    /* KEIN Außenabstand */
-  border-radius: 12px;
+  padding: 16px 12px 16px 12px; /* kompakter, oben näher */
+  margin: 0px;                    /* KEIN Außenabstand */
+  border-radius: 8px;
 }
 
 .results-title {
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 600;
-  margin: 0;              /* kein Extra-Abstand */
+  margin-top: 0px;              /* kein Extra-Abstand */
 }
 
 .search-meta {
@@ -165,7 +165,7 @@ body {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 4px;        /* minimaler Abstand */
+  margin-top: 26px;        /* minimaler Abstand */
 }
 
 .condition-debug {
