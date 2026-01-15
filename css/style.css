@@ -1,42 +1,183 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
+  margin: 0;               /* wichtig */
+  padding: 20px;           /* kontrollierter Innenabstand */
   background-color: #f9f9f9;
 }
 
-.hotel-list {
+/* =========================
+   Layout
+========================= */
+#results-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  margin-top: 20px;
+  gap: 24px;
+  align-items: start;
+}
+
+#results-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 0;
+  gap: 16px;
+  max-width: 1400px;
 }
 
-.hotel-item {
+/* =========================
+   Filter (links)
+========================= */
+#filters {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  background: #fafafa;
+  position: sticky;
+  top: 20px;
+}
+
+#filters h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.filter-group {
+  margin-bottom: 16px;
+}
+
+.filter-group label {
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.filter-group input[type="range"] {
+  width: 100%;
+}
+
+.checkbox-group label {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+#price-value {
+  font-size: 13px;
+  color: #555;
+}
+
+/* =========================
+   Hotel Cards (rechts)
+========================= */
+.hotel-card {
   display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  background-color: white;
+  justify-content: space-between; /* links Bild+Text, rechts Preis */
+  align-items: stretch;           /* volle Höhe für linke Spalte */
+  padding: 12px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: white;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: box-shadow 0.2s ease;
+  gap: 16px;
 }
 
-.hotel-item:hover {
-  transform: scale(1.02);
+.hotel-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
 }
 
-.hotel-name {
-  font-weight: bold;
+.hotel-image {
+  width: 300px;          
+  height: 200px;         
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.hotel-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Header oben, Footer unten */
+  flex: 1;
+  margin-left: 12px;              /* Abstand zum Bild */
+}
+
+.hotel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;                       /* Name & Sterne */
+}
+
+.hotel-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;                       /* Bewertung & AI-Badge */
+}
+
+.hotel-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hotel-stars {
+  color: #febb02;
+  font-size: 20px;
+}
+
+.hotel-rating {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
 }
 
 .hotel-price {
+  font-size: 20px;
+  font-weight: 600;
   color: #0071c2;
-  font-weight: bold;
+  align-self: flex-end;  /* unten rechts */
+  white-space: nowrap;
 }
 
 .hotel-ai {
-  margin-left: 10px;
-  color: green;
-  font-weight: bold;
+  font-size: 16px;
+  color: #1a73e8;
+  font-weight: 600;
+}
+
+#search-header {
+  background-color: #3f6fb3;   /* etwas dezenter als vorher */
+  color: #ffffff;
+
+  padding: 10px 24px 12px 24px; /* kompakter, oben näher */
+  margin: 0;                    /* KEIN Außenabstand */
+  border-radius: 12px;
+}
+
+.results-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;              /* kein Extra-Abstand */
+}
+
+.search-meta {
+  font-size: 18px;
+  color: #e3ebf7;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;        /* minimaler Abstand */
+}
+
+.condition-debug {
+  margin-top: 16px;
+  padding-top: 8px;
+  font-size: 11px;
+  color: #888;
+  border-top: 1px dashed #ddd;
+}
+
+.header-separator {
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.08);
+  margin: 12px 0 12px 0; /* Abstand nach unten steuerst du hier */
 }

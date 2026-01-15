@@ -3,21 +3,19 @@
 // =========================
 const startTime = Date.now();
 
-
 // =========================
-// Utility: Shuffle Array
+// Utility: Shuffle
 // =========================
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return array;
+  return arr;
 }
 
-
 // =========================
-// 2. Condition-Info (nur Debug / Pretest)
+// 2. Debug: Condition Info
 // =========================
 const conditionInfo = document.getElementById("condition-info");
 if (conditionInfo) {
@@ -25,90 +23,133 @@ if (conditionInfo) {
     `AI: ${STUDY.factors.ai ? 1 : 0}, High Price: ${STUDY.factors.hprice ? 1 : 0}`;
 }
 
-
 // =========================
-// 3. Hoteldaten laden & randomisieren
+// 3. Daten laden & manipulieren
 // =========================
 const hotels = shuffle([...HOTEL_DATA]);
 
-
-// =========================
-// 4. Preis-Manipulation (hprice)
-// =========================
-hotels.forEach(hotel => {
-  hotel.price = STUDY.factors.hprice
-    ? Math.round(hotel.basePrice * 1.3) // High-Price-Condition
-    : hotel.basePrice;                  // Control
+hotels.forEach(h => {
+  const base = h.price;
+  h.price = STUDY.factors.hprice ? Math.round(base * 1.3) : base;
 });
 
-
 // =========================
-// 5. Ergebnisse rendern (ai)
+// 4. Rendering
 // =========================
 function renderHotels(list) {
   const container = document.getElementById("results-list");
-  container.innerHTML = ""; // Reset
+  container.innerHTML = "";
 
-  list.forEach(hotel => {
-    const div = document.createElement("div");
-    div.classList.add("hotel-item");
+  list.forEach((hotel, index) => {
+    const card = document.createElement("div");
+    card.classList.add("hotel-card");
 
     let html = `
-      <span class="hotel-name">${hotel.name}</span>
-      <span class="hotel-price">${hotel.price} €</span>
+      <img src="${hotel.image}" alt="${hotel.name}" class="hotel-image">
+      <div class="hotel-info">
+        <div class="hotel-header">
+          <div class="hotel-title">${hotel.name}</div>
+          <div class="hotel-stars">${"★".repeat(hotel.stars)}</div>
+        </div>
+        <div class="hotel-footer">
+          <div class="hotel-rating">Bewertung ${hotel.rating.toFixed(1).replace(".", ",")}/10</div>
+          ${STUDY.factors.ai ? `<div class="hotel-ai">🤖 Empfohlen</div>` : ""}
+        </div>
+      </div>
+      <div class="hotel-price">${hotel.price} € pro Nacht</div>
     `;
 
-    if (STUDY.factors.ai) {
-      html += `<span class="hotel-ai">🤖 Empfohlen</span>`;
-    }
 
-    div.innerHTML = html;
+    card.innerHTML = html;
 
-    div.addEventListener("click", () => {
-      const duration = Date.now() - startTime;
-      redirectToQualtrics(hotel.id, duration);
+
+    card.addEventListener("click", () => {
+      redirectToQualtrics(hotel.id, Date.now() - startTime, index + 1);
     });
 
-    container.appendChild(div);
+    container.appendChild(card);
   });
 }
 
+// =========================
+// 5. Filter & Sort (zentral)
+// =========================
 const sortSelect = document.getElementById("sort-select");
+const maxPriceInput = document.getElementById("max-price");
+const priceValue = document.getElementById("price-value");
+const starCheckboxes = document.querySelectorAll(".checkbox-group input");
+const minRatingSelect = document.getElementById("min-rating");
 
-sortSelect.addEventListener("change", () => {
-  let sortedHotels = [...hotels];
+function applyFiltersAndSort() {
+  let filtered = [...hotels];
 
-  if (sortSelect.value === "price-asc") {
-    sortedHotels.sort((a, b) => a.price - b.price);
-  } else if (sortSelect.value === "price-desc") {
-    sortedHotels.sort((a, b) => b.price - a.price);
+  // Max Preis
+  if (maxPriceInput?.value) {
+    const max = Number(maxPriceInput.value);
+    filtered = filtered.filter(h => h.price <= max);
   }
 
-  renderHotels(sortedHotels);
+  // Sterne
+  const activeStars = Array.from(starCheckboxes)
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
+
+  if (activeStars.length > 0) {
+    filtered = filtered.filter(h => {
+      if (activeStars.includes("low") && h.stars <= 3) return true;
+      if (activeStars.includes("4") && h.stars === 4) return true;
+      if (activeStars.includes("5") && h.stars === 5) return true;
+      return false;
+    });
+  }
+
+  // Mindestbewertung
+  if (minRatingSelect?.value) {
+    filtered = filtered.filter(h => h.rating >= Number(minRatingSelect.value));
+  }
+
+  // Sortierung
+  if (sortSelect?.value === "price-asc") {
+    filtered.sort((a, b) => a.price - b.price);
+  } else if (sortSelect?.value === "price-desc") {
+    filtered.sort((a, b) => b.price - a.price);
+  }
+
+  renderHotels(filtered);
+}
+
+// =========================
+// 6. Listener
+// =========================
+sortSelect?.addEventListener("change", applyFiltersAndSort);
+
+maxPriceInput?.addEventListener("input", () => {
+  priceValue.textContent = `${maxPriceInput.value} €`;
+  applyFiltersAndSort();
 });
 
-// Initial render
+starCheckboxes.forEach(cb =>
+  cb.addEventListener("change", applyFiltersAndSort)
+);
+
+minRatingSelect?.addEventListener("change", applyFiltersAndSort);
+
+// =========================
+// Initialer Render (wichtig!)
+// =========================
 renderHotels(hotels);
 
-
 // =========================
-// 6. Redirect zu Qualtrics
+// 7. Redirect Qualtrics
 // =========================
-function redirectToQualtrics(choice, time) {
-
-  const qualtricsUrl =
+function redirectToQualtrics(choice, time, rank) {
+  const base =
     "https://lmubwl.eu.qualtrics.com/jfe/form/SV_di0S93IFjvdDiCy";
+  const sep = base.includes("?") ? "&" : "?";
 
-  // Robust gegen ? / & Probleme
-  const separator = qualtricsUrl.includes("?") ? "&" : "?";
-
-  const redirectUrl =
-    qualtricsUrl +
-    separator +
-    `choice=${encodeURIComponent(choice)}` +
-    `&time=${encodeURIComponent(time)}` +
+  window.location.href =
+    base + sep +
+    `choice=${choice}&time=${time}&rank=${rank}` +
     `&ai=${STUDY.factors.ai ? 1 : 0}` +
     `&hprice=${STUDY.factors.hprice ? 1 : 0}`;
-
-  window.location.href = redirectUrl;
 }
