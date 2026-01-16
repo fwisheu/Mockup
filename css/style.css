@@ -205,6 +205,8 @@ body {
     align-self: flex-start;
     margin-top: 8px;
     font-size: 18px;
+    padding: 1px;
+    font-weight: 900;
   }
 
   .hotel-title {
@@ -218,7 +220,7 @@ body {
 
   .hotel-header,
   .hotel-footer {
-  padding: 3px;
+  padding: 1px;
   }
 
   body {
