@@ -106,30 +106,32 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding: 3px;
 }
 
 .hotel-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
 }
 
 .hotel-stars {
   color: #febb02;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .hotel-rating {
-  font-size: 16px;
+  font-size: 18px;
   color: #333;
   font-weight: 500;
 }
 
 .hotel-price {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   color: #0071c2;
   align-self: flex-end;
   white-space: nowrap;
+  margin-right: 10px;
 }
 
 .hotel-ai {
@@ -175,4 +177,17 @@ body {
   font-size: 11px;
   color: #888;
   border-top: 1px dashed #ddd;
+}
+
+/* =========================
+   mobile Ansicht
+========================= */
+@media (max-width: 900px) {
+  #results-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #filters {
+    position: static;
+  }
 }
