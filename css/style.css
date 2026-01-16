@@ -216,11 +216,12 @@ body {
   .hotel-rating,
   .hotel-ai {
     font-size: 15px;
+    padding-top: 4px;
   }
 
   .hotel-header,
   .hotel-footer {
-  padding: 1px;
+  padding: -2px;
   }
 
   body {
