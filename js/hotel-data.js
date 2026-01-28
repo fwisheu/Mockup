@@ -1,5 +1,5 @@
 // Zentrales Hotel-Datenobjekt
-const HOTEL_DATA = [
+const HOTELS = [
   {
     id: "h1",
     name: "Hotel Alpha",

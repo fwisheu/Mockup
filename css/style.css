@@ -23,6 +23,13 @@ body {
   max-width: 1400px;
 }
 
+#llm-hotels{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 1400px;
+}
+
 /* =========================
    Filter
 ========================= */
@@ -229,3 +236,86 @@ body {
   }
 }
 
+.page-container {
+  max-width: 1400px;
+}
+
+#chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 1400px;
+  margin: 0 0 12px 0;
+  margin-bottom: 12px;
+}
+
+.chat {
+  max-width: 1400px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-msg {
+  padding: 10px 14px;
+  border-radius: 10px;
+  max-width: 80%;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+.chat-msg.ai {
+  background: rgba(202, 199, 199, 0.1);
+  align-self: flex-start;
+  border-radius: 12px 12px 12px 4px;
+}
+
+.chat-msg.user {
+  background: #e5f5da9a;
+  color: black;
+  align-self: flex-end;
+  border-radius: 12px 12px 4px 12px;
+}
+
+.chat-input input {
+  width: 100%;
+  max-width: 1340px;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.chat-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.chat-hotels {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.typing {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.typing span {
+  width: 6px;
+  height: 6px;
+  background: #888;
+  border-radius: 50%;
+  animation: blink 1.4s infinite both;
+}
+
+.typing span:nth-child(2) { animation-delay: .2s; }
+.typing span:nth-child(3) { animation-delay: .4s; }
+
+@keyframes blink {
+  0% { opacity: .2; }
+  20% { opacity: 1; }
+  100% { opacity: .2; }
+}

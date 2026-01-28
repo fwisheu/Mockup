@@ -2,14 +2,33 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Mockup Vergleichsportal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Landing Page</title>
 </head>
 <body>
-  <h1>Mockup Vergleichsportal</h1>
-  <p>AI = 0, HPRICE = 0 | <a href="results.html?ai=0&hprice=0">Zur Ergebnisliste</a></p> 
-  <p>AI = 0, HPRICE = 1 | <a href="results.html?ai=0&hprice=1">Zur Ergebnisliste</a></p>
-  <p>AI = 1, HPRICE = 0 | <a href="results.html?ai=1&hprice=0">Zur Ergebnisliste</a></p>
-  <p>AI = 1, HPRICE = 1 | <a href="results.html?ai=1&hprice=1">Zur Ergebnisliste</a></p> 
+<main style="text-align: center; padding: 100px 20px;">
+  <h1>Welcome to the Hotel Search</h1>
+  <p>Please press "Start" to begin your search.</p>
+  <button id="start-btn" style="font-size: 18px; padding: 12px 24px; cursor: pointer;">
+    Start
+  </button>
+</main>
+
+<script>
+document.getElementById("start-btn").addEventListener("click", () => {
+  // Zufällige Zuweisung
+  const aiCondition = Math.random() < 0.5; // 50% Chance Chatbot
+  const aiParam = aiCondition ? 1 : 0;
+
+  // Weiterleitung
+  if (aiCondition) {
+    window.location.href = `results-llm.html?ai=${aiParam}`;
+  } else {
+    window.location.href = `results-filter.html?ai=${aiParam}`;
+  }
+});
+</script>
+
 </body>
 </html>
-

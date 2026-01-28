@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Hotel Search – Filter</title>
+</head>
+<body>
+<header id="search-header">
+  <h1 class="results-title">Results for 'Vancouver, Canada'</h1>
+  <div class="search-meta">
+    <span>March 31 - April 04, 2026</span> • 
+    <span>2 Adults</span> • 
+    <span>1 Room</span>
+  </div>
+</header>
+<div class="header-separator"></div>
+
+<main id="results-layout">
+  <aside id="filters">
+    <h3>Filter</h3>
+    <div class="filter-group">
+      <label for="max-price">Max. Preis (€)</label>
+      <input type="range" id="max-price" min="50" max="200" step="5" value="200">
+      <span id="price-value">200 €</span>
+    </div>
+    <div class="filter-group">
+      <label>Sterne</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" value="low" checked> 0-3 Sterne</label>
+        <label><input type="checkbox" value="4" checked> 4 Sterne</label>
+        <label><input type="checkbox" value="5" checked> 5 Sterne</label>
+      </div>
+    </div>
+    <div class="filter-group">
+      <label for="min-rating">Mindestbewertung</label>
+      <select id="min-rating">
+        <option value="0">Alle</option>
+        <option value="7">7,0+</option>
+        <option value="8">8,0+</option>
+        <option value="9">9,0+</option>
+      </select>
+    </div>
+    <div id="condition-info" class="condition-debug"></div>
+  </aside>
+
+  <section id="results-list">
+    <!-- JS fügt hier die Hotel-Cards ein -->
+  </section>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/hotel-data.js"></script>
+<script src="js/results.js"></script>
+
+</body>
+</html>
