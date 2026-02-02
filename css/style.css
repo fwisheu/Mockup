@@ -319,3 +319,100 @@ body {
   20% { opacity: 1; }
   100% { opacity: .2; }
 }
+
+/* Modal Basis */
+.hotel-modal {
+  display: none; /* versteckt standardmäßig */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000; /* über allem */
+}
+
+.hotel-modal.open {
+  display: block;
+}
+
+/* Overlay */
+.hotel-modal .modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Modal Content */
+.hotel-modal .modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  max-width: 600px;
+  width: 90%;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  z-index: 1010;
+}
+
+/* Hauptbild */
+.modal-main-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Galerie Thumbnails */
+.modal-gallery {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.modal-thumbnail {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 6px;
+}
+
+.modal-thumbnail:hover {
+  border-color: #0077ff;
+}
+
+/* Details */
+.modal-details {
+  margin-bottom: 12px;
+}
+
+/* Buttons */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#select-hotel-btn {
+  background-color: #0077ff;
+  color: #fff;
+}
+
+#close-hotel-btn {
+  background-color: #ccc;
+  color: #000;
+}

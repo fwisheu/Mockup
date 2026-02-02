@@ -1,9 +1,11 @@
+const startTime = Date.now();
+
 const chatContainer = document.getElementById("chat-container");
 const inputField = document.getElementById("chat-input");
 const hotelContainer = document.getElementById("llm-hotels");
 
 // ==========================
-// System Prompt
+// LLM System Prompt
 // ==========================
 const SYSTEM_PROMPT = `
 You are a hotel selection assistant in a scientific study.
@@ -38,7 +40,7 @@ IMPORTANT:
 `;
 
 // ==========================
-// Nachrichten Array
+// Chatnachrichten Array
 // ==========================
 let messages = [
   { role: "system", content: SYSTEM_PROMPT },
@@ -66,17 +68,17 @@ function showTypingBubble() {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function removeTypingBubble() {
   const el = document.getElementById("typing-indicator");
   if (el) el.remove();
 }
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // ==========================
-// KI aufrufen
+// LLM API-Aufruf
 // ==========================
 async function callLLM() {
   showTypingBubble();
@@ -92,7 +94,7 @@ async function callLLM() {
 }
 
 // ==========================
-// User Antwort Event
+// User-Input Event
 // ==========================
 inputField.addEventListener("keydown", async (e) => {
   if (e.key !== "Enter" || !inputField.value.trim()) return;
@@ -102,54 +104,69 @@ inputField.addEventListener("keydown", async (e) => {
   addMessage(userText, "user");
   messages.push({ role: "user", content: userText });
 
-  // KI antwortet
   inputField.disabled = true;
-
   const reply = await callLLM();
   messages.push({ role: "assistant", content: reply });
-
   inputField.disabled = false;
   inputField.focus();
 
-  // Prüfen: JSON?
+  // Prüfen, ob LLM JSON zurückgibt
   try {
     const parsed = JSON.parse(reply);
     if (parsed.recommendations) {
       // Letzte Nachricht vor den Hotels
       addMessage("That makes perfect sense! Based on your preferences, I have now selected the following hotels for you. Please select the one you like best!", "ai");
-      renderHotels(parsed.recommendations);
-      // Eingabe entfernen
+      const matchedHotels = parsed.recommendations
+        .map(rec => HOTELS.find(h => h.name === rec.name))
+        .filter(Boolean);
+      renderHotels(matchedHotels);
       document.querySelector(".chat-input").remove();
     } else {
       addMessage(reply, "ai");
     }
   } catch {
-    // Noch keine JSON-Antwort -> normale Chatbubble
     addMessage(reply, "ai");
   }
 });
 
 // ==========================
-// Hotels rendern
+// Hotels rendern + Modal öffnen
 // ==========================
 function renderHotels(hotels) {
   hotelContainer.innerHTML = "";
-  hotels.forEach(hotel => {
+  hotels.forEach((hotel, index) => {
+    hotel.images = hotel.images || {
+      cover: hotel.image || "",
+      gallery: [hotel.image || "", hotel.image || "", hotel.image || ""]
+    };
     const div = document.createElement("div");
     div.className = "hotel-card";
     div.innerHTML = `
-      <img src="${hotel.image}" class="hotel-image">
+      <img src="${hotel.images.cover}" class="hotel-image">
       <div class="hotel-info">
         <div class="hotel-header">
           <div class="hotel-title">${hotel.name}</div>
-          <div class="hotel-stars">${"★".repeat(hotel.stars)}</div>
+          <div class="hotel-stars">${"★".repeat(hotel.attributes.stars)}</div>
         </div>
         <div class="hotel-footer">
-          <div class="hotel-rating">Bewertung ${hotel.rating}/10</div>
+          <div class="hotel-rating">
+            Bewertung ${hotel.attributes.rating}/10
+          </div>
         </div>
       </div>
-      <div class="hotel-price">${hotel.price} €</div>
+      <div class="hotel-price">
+        ${hotel.attributes.price} € per night
+      </div>
     `;
+    div.addEventListener("click", () => {
+      openHotelModal(hotel, () => {
+        redirectToQualtrics({
+          hotel: hotel,
+          rank: index + 1,
+          startTime: startTime
+        });
+      });
+    });
     hotelContainer.appendChild(div);
   });
   chatContainer.appendChild(hotelContainer);

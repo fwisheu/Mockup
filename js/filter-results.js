@@ -1,5 +1,5 @@
 // =========================
-// 1. Startzeit messen
+// Startzeit (Qualtrics)
 // =========================
 const startTime = Date.now();
 
@@ -14,27 +14,11 @@ function shuffle(arr) {
   return arr;
 }
 
-// =========================
-// 2. Debug: Condition Info
-// =========================
-const conditionInfo = document.getElementById("condition-info");
-if (conditionInfo) {
-  conditionInfo.textContent =
-    `AI: ${STUDY.factors.ai ? 1 : 0}, High Price: ${STUDY.factors.hprice ? 1 : 0}`;
-}
-
-// =========================
-// 3. Daten laden & manipulieren
-// =========================
+// Hotels mischen (Reihenfolgeeffekte vermeiden)
 const hotels = shuffle([...HOTELS]);
 
-hotels.forEach(h => {
-  const base = h.price;
-  h.price = STUDY.factors.hprice ? Math.round(base * 1.3) : base;
-});
-
 // =========================
-// 4. Rendering
+// Hotelcards: Rendering
 // =========================
 function renderHotels(list) {
   const container = document.getElementById("results-list");
@@ -42,29 +26,40 @@ function renderHotels(list) {
 
   list.forEach((hotel, index) => {
     const card = document.createElement("div");
-    card.classList.add("hotel-card");
+    card.className = "hotel-card";
 
-    let html = `
-      <img src="${hotel.image}" alt="${hotel.name}" class="hotel-image">
+    card.innerHTML = `
+      <img src="${hotel.images.cover}" class="hotel-image">
+
       <div class="hotel-info">
         <div class="hotel-header">
           <div class="hotel-title">${hotel.name}</div>
-          <div class="hotel-stars">${"★".repeat(hotel.stars)}</div>
+          <div class="hotel-stars">
+            ${"★".repeat(hotel.attributes.stars)}
+          </div>
         </div>
+
         <div class="hotel-footer">
-          <div class="hotel-rating">Bewertung ${hotel.rating.toFixed(1).replace(".", ",")}/10</div>
-          ${STUDY.factors.ai ? `<div class="hotel-ai">🤖 Empfohlen</div>` : ""}
+          <div class="hotel-rating">
+            Bewertung ${hotel.attributes.rating}/10
+          </div>
         </div>
       </div>
-      <div class="hotel-price">${hotel.price} € pro Nacht</div>
+
+      <div class="hotel-price">
+        ${hotel.attributes.price} € per night
+      </div>
     `;
 
-
-    card.innerHTML = html;
-
-
+    // Klick → Modal → Qualtrics
     card.addEventListener("click", () => {
-      redirectToQualtrics(hotel.id, Date.now() - startTime, index + 1);
+      openHotelModal(hotel, () => {
+        redirectToQualtrics({
+          hotel: hotel,
+          rank: index + 1,
+          startTime: startTime
+        });
+      });
     });
 
     container.appendChild(card);
@@ -74,19 +69,20 @@ function renderHotels(list) {
 // =========================
 // 5. Filter & Sort (zentral)
 // =========================
-const sortSelect = document.getElementById("sort-select");
 const maxPriceInput = document.getElementById("max-price");
 const priceValue = document.getElementById("price-value");
 const starCheckboxes = document.querySelectorAll(".checkbox-group input");
 const minRatingSelect = document.getElementById("min-rating");
 
-function applyFiltersAndSort() {
+function applyFilters() {
   let filtered = [...hotels];
 
   // Max Preis
   if (maxPriceInput?.value) {
     const max = Number(maxPriceInput.value);
-    filtered = filtered.filter(h => h.price <= max);
+    filtered = filtered.filter(
+      h => h.attributes.price <= max
+    );
   }
 
   // Sterne
@@ -94,62 +90,41 @@ function applyFiltersAndSort() {
     .filter(cb => cb.checked)
     .map(cb => cb.value);
 
-  if (activeStars.length > 0) {
+  if (activeStars.length) {
     filtered = filtered.filter(h => {
-      if (activeStars.includes("low") && h.stars <= 3) return true;
-      if (activeStars.includes("4") && h.stars === 4) return true;
-      if (activeStars.includes("5") && h.stars === 5) return true;
+      const s = h.attributes.stars;
+      if (activeStars.includes("low") && s <= 3) return true;
+      if (activeStars.includes("4") && s === 4) return true;
+      if (activeStars.includes("5") && s === 5) return true;
       return false;
     });
   }
 
   // Mindestbewertung
   if (minRatingSelect?.value) {
-    filtered = filtered.filter(h => h.rating >= Number(minRatingSelect.value));
-  }
-
-  // Sortierung
-  if (sortSelect?.value === "price-asc") {
-    filtered.sort((a, b) => a.price - b.price);
-  } else if (sortSelect?.value === "price-desc") {
-    filtered.sort((a, b) => b.price - a.price);
+    filtered = filtered.filter(
+      h => h.attributes.rating >= Number(minRatingSelect.value)
+    );
   }
 
   renderHotels(filtered);
 }
 
 // =========================
-// 6. Listener
+// Listener
 // =========================
-sortSelect?.addEventListener("change", applyFiltersAndSort);
-
 maxPriceInput?.addEventListener("input", () => {
   priceValue.textContent = `${maxPriceInput.value} €`;
-  applyFiltersAndSort();
+  applyFilters();
 });
 
 starCheckboxes.forEach(cb =>
-  cb.addEventListener("change", applyFiltersAndSort)
+  cb.addEventListener("change", applyFilters)
 );
 
-minRatingSelect?.addEventListener("change", applyFiltersAndSort);
+minRatingSelect?.addEventListener("change", applyFilters);
 
 // =========================
 // Initialer Render (wichtig!)
 // =========================
 renderHotels(hotels);
-
-// =========================
-// 7. Redirect Qualtrics
-// =========================
-function redirectToQualtrics(choice, time, rank) {
-  const base =
-    "https://lmubwl.eu.qualtrics.com/jfe/form/SV_di0S93IFjvdDiCy";
-  const sep = base.includes("?") ? "&" : "?";
-
-  window.location.href =
-    base + sep +
-    `choice=${choice}&time=${time}&rank=${rank}` +
-    `&ai=${STUDY.factors.ai ? 1 : 0}` +
-    `&hprice=${STUDY.factors.hprice ? 1 : 0}`;
-}
