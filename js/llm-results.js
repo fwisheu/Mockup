@@ -4,6 +4,10 @@ const chatContainer = document.getElementById("chat-container");
 const inputField = document.getElementById("chat-input");
 const hotelContainer = document.getElementById("llm-hotels");
 
+// 🔹 API-URL dynamisch setzen
+const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ? "http://localhost:3000/api/chat"
+  : "/.netlify/functions/chat";
 
 // ==========================
 // LLM System Prompt
@@ -84,7 +88,7 @@ function delay(ms) {
 async function callLLM() {
   showTypingBubble();
   await delay(500 + Math.random() * 700);
-  const res = await fetch("http://localhost:3000/api/chat", {
+  const res = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ messages })
