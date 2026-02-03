@@ -18,40 +18,10 @@
 <div class="header-separator"></div>
 
 <main id="results-layout">
-  <aside id="filters" data-condition="filter">
+  <aside id="filters">
     <h3>Filter</h3>
-    <div class="filter-group">
-      <label for="max-price">Maximum Price (€)</label>
-      <input
-        type="range"
-        id="max-price"  
-        min="50"
-        max="200"
-        step="5"
-        value="200"
-        aria-label="Max. price per night"
-      >
-      <span id="price-value">200 €</span>
-    </div>
-    <div class="filter-group">
-      <label>Sterne</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" value="low" checked> 0-3 Stars</label>
-        <label><input type="checkbox" value="4" checked> 4 Stars</label>
-        <label><input type="checkbox" value="5" checked> 5 Stars</label>
-      </div>
-    </div>
-    <div class="filter-group">
-      <label for="min-rating">Minimum Rating</label>
-      <select id="min-rating">
-        <option value="0">All</option>
-        <option value="7">7.0+</option>
-        <option value="8">8.0+</option>
-        <option value="9">9.0+</option>
-      </select>
-    </div>
+    <div id="condition-info"></div>
   </aside>
-
   <section id="results-list" aria-live="polite">
     <!-- JS fügt hier die Hotel-Cards ein -->
   </section>
@@ -59,6 +29,7 @@
 
 <script src="js/config.js"></script>
 <script src="js/hotel-data.js"></script>
+<script src="js/filter-config.js"></script>
 <script src="js/hotel-modal.js"></script>
 <script src="js/study-flow.js"></script>
 <script src="js/filter-results.js"></script>

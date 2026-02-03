@@ -1,4 +1,4 @@
-// Zentrales Hotel-Datenobjekt
+// Central hotel data object
 const HOTELS = [
   {
     id: "h1",
@@ -7,9 +7,17 @@ const HOTELS = [
       price: 100,
       stars: 4,
       rating: 8.4,
-      distance: 0.5
+      distance: 0.5,
+      breakfast: true,
+      pool: false,
+      sauna: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Harbourview+Hotel",
       gallery: [
@@ -27,9 +35,17 @@ const HOTELS = [
       price: 90,
       stars: 3,
       rating: 9.1,
-      distance: 1.2
+      distance: 1.2,
+      breakfast: true,
+      pool: false,
+      sauna: false,
+      fitness: false,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "apartment"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Granville+Suites",
       gallery: [
@@ -47,9 +63,17 @@ const HOTELS = [
       price: 110,
       stars: 5,
       rating: 7.8,
-      distance: 2.0
+      distance: 2.0,
+      breakfast: false,
+      pool: true,
+      sauna: true,
+      fitness: true,
+      aircon: true,
+      freeCancellation: false,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Pacific+Crown",
       gallery: [
@@ -67,9 +91,17 @@ const HOTELS = [
       price: 110,
       stars: 4,
       rating: 8.7,
-      distance: 0.8
+      distance: 0.8,
+      breakfast: true,
+      pool: true,
+      sauna: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Downtown+Skyline",
       gallery: [
@@ -87,9 +119,17 @@ const HOTELS = [
       price: 130,
       stars: 5,
       rating: 9.3,
-      distance: 1.5
+      distance: 1.5,
+      breakfast: true,
+      pool: true,
+      sauna: true,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Westmount+Grand",
       gallery: [
@@ -107,9 +147,17 @@ const HOTELS = [
       price: 85,
       stars: 3,
       rating: 7.2,
-      distance: 2.8
+      distance: 2.8,
+      breakfast: false,
+      pool: false,
+      sauna: false,
+      fitness: false,
+      aircon: false,
+      freeCancellation: false,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "guesthouse"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Maple+Leaf+Inn",
       gallery: [
@@ -127,9 +175,17 @@ const HOTELS = [
       price: 95,
       stars: 4,
       rating: 8.0,
-      distance: 1.9
+      distance: 1.9,
+      breakfast: true,
+      pool: false,
+      sauna: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=North+Shore+Hotel",
       gallery: [
@@ -147,9 +203,17 @@ const HOTELS = [
       price: 125,
       stars: 5,
       rating: 9.0,
-      distance: 3.0
+      distance: 3.0,
+      breakfast: true,
+      pool: true,
+      sauna: true,
+      fitness: true,
+      aircon: true,
+      freeCancellation: false,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "holiday_home"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Emerald+Bay+Resort",
       gallery: [
@@ -167,9 +231,17 @@ const HOTELS = [
       price: 105,
       stars: 4,
       rating: 8.5,
-      distance: 1.0
+      distance: 1.0,
+      breakfast: true,
+      pool: false,
+      sauna: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=CityLights+Hotel",
       gallery: [
@@ -187,9 +259,17 @@ const HOTELS = [
       price: 88,
       stars: 3,
       rating: 7.5,
-      distance: 2.3
+      distance: 2.3,
+      breakfast: false,
+      pool: false,
+      sauna: false,
+      fitness: false,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Seaside+Comfort",
       gallery: [
@@ -207,9 +287,17 @@ const HOTELS = [
       price: 115,
       stars: 4,
       rating: 8.8,
-      distance: 1.6
+      distance: 1.6,
+      breakfast: true,
+      pool: true,
+      sauna: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Lions+Gate+Hotel",
       gallery: [
@@ -227,9 +315,17 @@ const HOTELS = [
       price: 140,
       stars: 5,
       rating: 9.5,
-      distance: 0.7
+      distance: 0.7,
+      breakfast: true,
+      pool: true,
+      sauna: true,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "hotel"
     },
-
     images: {
       cover: "https://placehold.co/300x200?text=Pacific+Pearl",
       gallery: [

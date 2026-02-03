@@ -4,6 +4,7 @@ const chatContainer = document.getElementById("chat-container");
 const inputField = document.getElementById("chat-input");
 const hotelContainer = document.getElementById("llm-hotels");
 
+
 // ==========================
 // LLM System Prompt
 // ==========================

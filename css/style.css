@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 10px;
   background-color: #f9f9f9;
 }
 
@@ -11,7 +11,7 @@ body {
 #results-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
-  margin-top: 12px;
+  margin-top: 8px;
   gap: 24px;
   align-items: start;
 }
@@ -31,46 +31,191 @@ body {
 }
 
 /* =========================
+   Header
+========================= */
+#search-header {
+  background-color: #204881;
+  color: #ffffff;
+  padding: 16px 12px;
+  border-radius: 8px;
+}
+
+.results-title {
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.search-meta {
+  font-size: 18px;
+  color: #e3ebf7;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+
+.header-separator {
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.08);
+  margin: 8px 0;
+}
+
+/* =========================
    Filter
 ========================= */
 #filters {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 12px;
-  background: #fafafa;
+  background: #ffffff;
   position: sticky;
   top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Filtersymbol vor der Überschrift */
+#filters h3::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  margin-left: 4px;
+  display: inline-block;
+
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjNTU1JyBzdHJva2Utd2lkdGg9JzInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHBvbHlnb24gcG9pbnRzPScyMiAzIDIgMyAxMCAxMiAxMCAxOSAxNCAyMSAxNCAxMiAyMiAzJy8+PC9zdmc+");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* Hauptüberschrift */
 #filters h3 {
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-.filter-group {
-  margin-bottom: 16px;
-}
-
-.filter-group label {
-  font-size: 14px;
+  font-size: 22px;
   font-weight: 600;
-  display: block;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;              /* Abstand zwischen Icon und Text */
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+/* Eine Filter-Kategorie = kleine Card */
+.filter-group {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fafafa;
+  margin-bottom: 14px;
+}
+
+/* Kategorie-Überschrift */
+.filter-group h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+/* Unterüberschriften innerhalb einer Kategorie (Subheading) */
+.filter-item-subheading {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin: 16px 0 8px 0;          /* vorher: 12px 0 6px */
+  padding-bottom: 4px;           /* vorher: 2px */
+  border-bottom: 1px solid #e6e6e6;  /* minimal heller */
+}
+
+/* Erste Filter-Zeile nach einem Subheading */
+.filter-item-subheading + .filter-item {
+  margin-top: 6px;
+}
+
+/* Einzelnes Filter-Element */
+.filter-item {
   margin-bottom: 6px;
 }
 
-.filter-group input[type="range"] {
-  width: 100%;
+.filter-item:last-child {
+  margin-bottom: 0;
 }
 
-.checkbox-group label {
+/* Labels allgemein */
+.filter-item label {
   font-size: 14px;
-  display: block;
+  font-weight: 500;
+  color: #333;
+
+  display: flex;        /* Flexbox aktivieren */
+  align-items: center;  /* Vertikal zentrieren */
+  gap: 6px;             /* Abstand zwischen Checkbox und Text */
+  line-height: 1.4;
+  cursor: pointer;      /* zeigt klickbar an */
+}
+
+/* Abstand zwischen Checkbox-Zeilen */
+.filter-item label + label {
+  margin-top: 4px;
+}
+
+/* Checkboxen & Multi-Select */
+.filter-item input[type="checkbox"] {
   margin-bottom: 4px;
 }
 
-#price-value {
-  font-size: 13px;
+/* Select */
+.filter-item select {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #ffffff;
+  font-size: 14px;
+}
+
+/* Range Slider (neutral, kein Verlauf) */
+.filter-item input[type="range"] {
+  width: 100%;
+  margin-top: 6px;
+  background: #ddd;
+  height: 4px;
+  border-radius: 2px;
+  appearance: none;
+}
+
+/* Slider Thumb */
+.filter-item input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0071c2; /* gleiche Farbe wie Hotelpreis */
+  cursor: pointer;
+}
+
+.filter-item input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0071c2;
+  cursor: pointer;
+}
+
+/* Range-Wert */
+.range-value {
+  font-size: 12px;
   color: #555;
+  margin-left: 6px;
+}
+
+#condition-info {
+  padding-top: 2px;
+  font-size: 11px;
+  color: #888;
+  border-top: 1px dashed #ddd;
 }
 
 /* =========================
@@ -145,45 +290,6 @@ body {
   font-size: 16px;
   color: #1a73e8;
   font-weight: 600;
-}
-
-/* =========================
-   Header
-========================= */
-#search-header {
-  background-color: #204881;
-  color: #ffffff;
-  padding: 16px 12px;
-  border-radius: 8px;
-}
-
-.results-title {
-  font-size: 30px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.search-meta {
-  font-size: 18px;
-  color: #e3ebf7;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 26px;
-}
-
-.header-separator {
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.08);
-  margin: 12px 0;
-}
-
-.condition-debug {
-  margin-top: 16px;
-  padding-top: 8px;
-  font-size: 11px;
-  color: #888;
-  border-top: 1px dashed #ddd;
 }
 
 /* =========================
