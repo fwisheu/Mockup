@@ -155,12 +155,12 @@ function renderHotels(hotels) {
         </div>
         <div class="hotel-footer">
           <div class="hotel-rating">
-            Bewertung ${hotel.attributes.rating}/10
+            Guest Rating ${hotel.attributes.rating}/10
           </div>
         </div>
       </div>
       <div class="hotel-price">
-        ${hotel.attributes.price} € per night
+        €${hotel.attributes.price} per night
       </div>
     `;
     div.addEventListener("click", () => {

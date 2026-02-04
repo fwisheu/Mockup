@@ -47,7 +47,7 @@ function openHotelModal(hotel, onSelect) {
 
   // Inhalte setzen
   nameEl.textContent = hotel.name;
-  metaEl.textContent = `${hotel.attributes.stars} Sterne · Bewertung ${hotel.attributes.rating}/10 · ${hotel.attributes.price} € pro Nacht`;
+  metaEl.textContent = `${hotel.attributes.stars} Stars · Rating ${hotel.attributes.rating}/10 · €${hotel.attributes.price} per night`;
 
   // Hauptbild
   const cover =
