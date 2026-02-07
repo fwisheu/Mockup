@@ -2,7 +2,17 @@ const startTime = Date.now();
 
 const chatContainer = document.getElementById("chat-container");
 const inputField = document.getElementById("chat-input");
+const sendBtn = document.getElementById("send-btn");
 const hotelContainer = document.getElementById("llm-hotels");
+
+function fetchWithTimeout(url, options, timeout = 15000) {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timeout")), timeout)
+    )
+  ]);
+}
 
 // 🔹 API-URL dynamisch setzen
 const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
@@ -85,54 +95,116 @@ function delay(ms) {
 // ==========================
 // LLM API-Aufruf
 // ==========================
-async function callLLM() {
+async function callLLM(retry = true) {
   showTypingBubble();
-  await delay(500 + Math.random() * 700);
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messages })
-  });
-  const data = await res.json();
-  removeTypingBubble();
-  return data.content;
+
+  try {
+    await delay(500 + Math.random() * 600);
+
+    const res = await fetchWithTimeout(
+      API_URL,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages })
+      },
+      15000
+    );
+
+    if (!res.ok) {
+      throw new Error(`API error ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    if (!data || typeof data.content !== "string") {
+      throw new Error("Invalid API response");
+    }
+
+    return data.content;
+
+  } catch (err) {
+    console.error("LLM failed:", err);
+
+    // 🔁 EIN Retry
+    if (retry) {
+      console.warn("Retrying once...");
+      return await callLLM(false);
+    }
+
+    return "__LLM_ERROR__";
+
+  } finally {
+    removeTypingBubble();
+  }
 }
 
 // ==========================
 // User-Input Event
 // ==========================
-inputField.addEventListener("keydown", async (e) => {
-  if (e.key !== "Enter" || !inputField.value.trim()) return;
+inputField.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") handleSend();
+});
+
+sendBtn.addEventListener("click", handleSend);
+
+async function handleSend() {
+  if (!inputField.value.trim()) return;
 
   const userText = inputField.value.trim();
   inputField.value = "";
+
   addMessage(userText, "user");
   messages.push({ role: "user", content: userText });
 
   inputField.disabled = true;
+  sendBtn.disabled = true;
+
   const reply = await callLLM();
+
+  if (reply === "__LLM_ERROR__") {
+    addMessage(
+      "Sorry, something went wrong on my side. Please try again.",
+      "ai"
+    );
+    inputField.disabled = false;
+    sendBtn.disabled = false;
+    inputField.focus();
+    return;
+  }
+
   messages.push({ role: "assistant", content: reply });
+
   inputField.disabled = false;
+  sendBtn.disabled = false;
   inputField.focus();
 
   // Prüfen, ob LLM JSON zurückgibt
+  let parsed;
+
   try {
-    const parsed = JSON.parse(reply);
-    if (parsed.recommendations) {
-      // Letzte Nachricht vor den Hotels
-      addMessage("That makes perfect sense! Based on your preferences, I have now selected the following hotels for you. Please select the one you like best!", "ai");
-      const matchedHotels = parsed.recommendations
-        .map(rec => HOTELS.find(h => h.name === rec.name))
-        .filter(Boolean);
-      renderHotels(matchedHotels);
-      document.querySelector(".chat-input").remove();
-    } else {
-      addMessage(reply, "ai");
-    }
+    parsed = JSON.parse(reply);
   } catch {
     addMessage(reply, "ai");
+    return;
   }
-});
+
+  if (parsed?.recommendations) {
+    addMessage(
+      "That makes perfect sense! I have now selected the hotels that fit your preferences best. Please select the one you like best!",
+      "ai"
+    );
+
+    const matchedHotels = parsed.recommendations
+      .map(rec => HOTELS.find(h => h.name === rec.name))
+      .filter(Boolean);
+
+    renderHotels(matchedHotels);
+    document.querySelector(".chat-input").remove();
+  } else {
+    addMessage(reply, "ai");
+  }
+}
 
 // ==========================
 // Hotels rendern + Modal öffnen
