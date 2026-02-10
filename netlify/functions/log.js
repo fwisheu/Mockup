@@ -1,31 +1,22 @@
 import { MongoClient } from "mongodb";
 
-const client = new MongoClient(process.env.MONGODB_URI);
+const client = new MongoClient(process.env.MONGODB_URI, {
+  serverApi: { version: "1", strict: true, deprecationErrors: true }
+});
+let db;
 
 export async function handler(event) {
   const body = JSON.parse(event.body);
 
-  await client.connect();
-  const db = client.db("hotel_experiment");
+  if (!db) {
+    await client.connect();
+    db = client.db("searchhotels_data"); // DB-Name
+  }
 
-  await db.collection(body.collection).insertOne(body.data);
+  const result = await db.collection(body.collection).insertOne(body.data);
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ ok: true })
+    body: JSON.stringify({ ok: true, insertedId: result.insertedId })
   };
 }
-
-fetch("/.netlify/functions/log", {
-  method: "POST",
-  body: JSON.stringify({
-    collection: "recommendations",
-    data: {
-      session_id,
-      recommendation_count: hotels.length,
-      recommendation_source: "ai",
-      recommendation_order: hotels.map(h => h.id),
-      timestamp: new Date().toISOString()
-    }
-  })
-});
