@@ -26,11 +26,11 @@ Object.entries(FILTER_DEFINITIONS).forEach(([key, def]) => {
 });
 
 function logFilterChange(filterName, newValue, oldValue) {
-  fetch("/.netlify/functions/log", {
+  fetch("/api/log", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      collection: "filter_events",
+      collection: "interaction_summary",
       data: {
         session_id,
         filter_name: filterName,
@@ -52,11 +52,11 @@ function isRemoval(oldVal, newVal) {
 }
 
 function logChoiceSet(hotels) {
-  fetch("/.netlify/functions/log", {
+  fetch("/api/log", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      collection: "choice_sets",
+      collection: "recommendations",
       data: {
         session_id,
         condition,

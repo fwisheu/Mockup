@@ -166,7 +166,7 @@ async function handleSend() {
   messages.push({ role: "user", content: userText });
 
   // Log User-Message
-  fetch("/.netlify/functions/log", {
+  fetch("/api/log", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -196,7 +196,7 @@ async function handleSend() {
   messages.push({ role: "assistant", content: reply });
 
   // Log AI-Message
-  fetch("/.netlify/functions/log", {
+  fetch("/api/log", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -226,11 +226,11 @@ async function handleSend() {
 
   if (parsed?.recommendations) {
     // Log Start of Decision Phase
-    fetch("/.netlify/functions/log", {
+    fetch("/api/log", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        collection: "decision_phase_start",
+        collection: "sessions",
         data: {
           session_id,
           timestamp: new Date().toISOString()
@@ -251,7 +251,7 @@ async function handleSend() {
     logRecommendations(matchedHotels);
 
     // Log Recommendations (previously only defined)
-    fetch("/.netlify/functions/log", {
+    fetch("/api/log", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -305,7 +305,7 @@ function renderHotels(hotels) {
     `;
     div.addEventListener("click", () => {
       openHotelModal(hotel, () => {
-        fetch("/.netlify/functions/log", {
+        fetch("/api/log", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -320,11 +320,11 @@ function renderHotels(hotels) {
         });
 
         // Log End of Session
-        fetch("/.netlify/functions/log", {
+        fetch("/api/log", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            collection: "session_end",
+            collection: "sessions",
             data: {
               session_id,
               end_reason: "hotel_selected",

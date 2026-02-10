@@ -81,7 +81,7 @@ function openHotelModal(hotel, onSelect) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        collection: "session_end",
+        collection: "sessions",
         data: {
           session_id,
           user_id,
