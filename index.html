@@ -16,16 +16,38 @@
 </main>
 
 <script>
-document.getElementById("start-btn").addEventListener("click", () => {
-  // Zufällige Zuweisung
-  const aiCondition = Math.random() < 0.5; // 50% Chance Chatbot
-  const aiParam = aiCondition ? 1 : 0;
+function generateId(prefix) {
+  return prefix + "_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+}
 
-  // Weiterleitung
-  if (aiCondition) {
-    window.location.href = `results-llm.html?ai=${aiParam}`;
+document.getElementById("start-btn").addEventListener("click", () => {
+  // User
+  let user_id = localStorage.getItem("user_id");
+  if (!user_id) {
+    user_id = generateId("u");
+    localStorage.setItem("user_id", user_id);
+  }
+
+  // Session
+  const session_id = generateId("s");
+  const session_start = new Date().toISOString();
+
+  // Condition
+  const condition = Math.random() < 0.5 ? 1 : 0;
+
+  // Persist session context
+  sessionStorage.setItem("STUDY_SESSION", JSON.stringify({
+    user_id,
+    session_id,
+    session_start,
+    condition
+  }));
+
+  // Redirect
+  if (condition === 1) {
+    window.location.href = "results-llm.html";
   } else {
-    window.location.href = `results-filter.html?ai=${aiParam}`;
+    window.location.href = "results-filter.html";
   }
 });
 </script>

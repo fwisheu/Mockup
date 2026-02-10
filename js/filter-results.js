@@ -1,7 +1,4 @@
-// =========================
-// Startzeit (Qualtrics)
-// =========================
-const startTime = Date.now();
+const { user_id, session_id, condition, session_start } = window.STUDY;
 
 // =========================
 // Globaler Filter-State
@@ -27,6 +24,49 @@ Object.entries(FILTER_DEFINITIONS).forEach(([key, def]) => {
       break;
   }
 });
+
+function logFilterChange(filterName, newValue, oldValue) {
+  fetch("/.netlify/functions/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collection: "filter_events",
+      data: {
+        session_id,
+        filter_name: filterName,
+        old_value: oldValue,
+        new_value: newValue,
+        action: isRemoval(oldValue, newValue) ? "remove" : "set",
+        full_state: { ...filterState },
+        timestamp: new Date().toISOString()
+      }
+    })
+  });
+}
+
+function isRemoval(oldVal, newVal) {
+  if (oldVal === true && newVal === false) return true;
+  if (Array.isArray(oldVal) && oldVal.length && newVal.length === 0) return true;
+  if (oldVal !== null && newVal === null) return true;
+  return false;
+}
+
+function logChoiceSet(hotels) {
+  fetch("/.netlify/functions/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collection: "choice_sets",
+      data: {
+        session_id,
+        condition,
+        hotel_count: hotels.length,
+        hotel_order: hotels.map(h => h.id),
+        timestamp: new Date().toISOString()
+      }
+    })
+  });
+}
 
 // ==========================
 // Filter UI rendern (nur HTML)
@@ -93,8 +133,10 @@ function renderSingleFilter(key, def) {
     `;
 
     wrapper.querySelector("input").addEventListener("change", e => {
+      const oldValue = filterState[key];
       filterState[key] = e.target.checked;
       applyFilters();
+      logFilterChange(key, filterState[key], oldValue);
     });
   }
 
@@ -116,9 +158,11 @@ function renderSingleFilter(key, def) {
     const value = wrapper.querySelector(".range-value");
 
     input.addEventListener("input", e => {
+      const oldValue = filterState[key];
       filterState[key] = Number(e.target.value);
       value.textContent = e.target.value + (def.unit || "");
       applyFilters();
+      logFilterChange(key, filterState[key], oldValue);
     });
   }
 
@@ -135,8 +179,10 @@ function renderSingleFilter(key, def) {
     `;
 
     wrapper.querySelector("select").addEventListener("change", e => {
+      const oldValue = filterState[key];
       filterState[key] = e.target.value || null;
       applyFilters();
+      logFilterChange(key, filterState[key], oldValue);
     });
   }
 
@@ -154,30 +200,35 @@ function renderSingleFilter(key, def) {
 
     wrapper.querySelectorAll("input").forEach(cb => {
       cb.addEventListener("change", () => {
+        const oldValue = [...filterState[key]];
         filterState[key] = Array.from(
           wrapper.querySelectorAll("input:checked")
         ).map(i => i.value);
         applyFilters();
+        logFilterChange(key, filterState[key], oldValue);
       });
     });
   }
 
-    // STARS (Sonderfall)
-    else if (def.type === "stars") {
-      wrapper.innerHTML = `
-        ${def.options.map(o => `
-          <label>
-            <input type="checkbox" value="${o.value}">
-            ${o.label}
-          </label>
-        `).join("")}
-      `;
+  // STARS (Sonderfall)
+  else if (def.type === "stars") {
+    wrapper.innerHTML = `
+      ${def.options.map(o => `
+        <label>
+          <input type="checkbox" value="${o.value}">
+          ${o.label}
+        </label>
+      `).join("")}
+    `;
 
     wrapper.querySelectorAll("input").forEach(cb => {
       cb.addEventListener("change", () => {
-        filterState[key] = Array.from(wrapper.querySelectorAll("input:checked"))
-                                .map(i => i.value);
+        const oldValue = [...filterState[key]];
+        filterState[key] = Array.from(
+          wrapper.querySelectorAll("input:checked")
+        ).map(i => i.value);
         applyFilters();
+        logFilterChange(key, filterState[key], oldValue);
       });
     });
   }
@@ -309,6 +360,7 @@ function applyFilters() {
   });
 
   renderHotels(filtered);
+  logChoiceSet(filtered);
 }
 
 // =========================

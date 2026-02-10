@@ -1,10 +1,16 @@
-const startTime = Date.now();
+// ==========================
+// Study-Kontext
+// ==========================
+const { user_id, session_id, condition, session_start } = window.STUDY;
 
 const chatContainer = document.getElementById("chat-container");
 const inputField = document.getElementById("chat-input");
 const sendBtn = document.getElementById("send-btn");
 const hotelContainer = document.getElementById("llm-hotels");
 
+// ==========================
+// Fetch mit Timeout
+// ==========================
 function fetchWithTimeout(url, options, timeout = 15000) {
   return Promise.race([
     fetch(url, options),
@@ -14,7 +20,9 @@ function fetchWithTimeout(url, options, timeout = 15000) {
   ]);
 }
 
-// 🔹 API-URL dynamisch setzen
+// ==========================
+// API-URL dynamisch setzen
+// ==========================
 const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
   ? "http://localhost:3000/api/chat"
   : "/.netlify/functions/chat";
@@ -93,7 +101,7 @@ function delay(ms) {
 }
 
 // ==========================
-// LLM API-Aufruf
+// LLM API-Call mit Retry
 // ==========================
 async function callLLM(retry = true) {
   showTypingBubble();
@@ -126,7 +134,7 @@ async function callLLM(retry = true) {
   } catch (err) {
     console.error("LLM failed:", err);
 
-    // 🔁 EIN Retry
+    // One Retry
     if (retry) {
       console.warn("Retrying once...");
       return await callLLM(false);
@@ -140,7 +148,7 @@ async function callLLM(retry = true) {
 }
 
 // ==========================
-// User-Input Event
+// User-Input
 // ==========================
 inputField.addEventListener("keydown", (e) => {
   if (e.key === "Enter") handleSend();
@@ -157,16 +165,28 @@ async function handleSend() {
   addMessage(userText, "user");
   messages.push({ role: "user", content: userText });
 
+  // Log User-Message
+  fetch("/.netlify/functions/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collection: "chat_messages",
+      data: {
+        session_id,
+        role: "user",
+        message_length: userText.length,
+        timestamp: new Date().toISOString()
+      }
+    })
+  });
+
   inputField.disabled = true;
   sendBtn.disabled = true;
 
   const reply = await callLLM();
 
   if (reply === "__LLM_ERROR__") {
-    addMessage(
-      "Sorry, something went wrong on my side. Please try again.",
-      "ai"
-    );
+    addMessage("Sorry, something went wrong on my side. Please try again.", "ai");
     inputField.disabled = false;
     sendBtn.disabled = false;
     inputField.focus();
@@ -174,6 +194,21 @@ async function handleSend() {
   }
 
   messages.push({ role: "assistant", content: reply });
+
+  // Log AI-Message
+  fetch("/.netlify/functions/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collection: "chat_messages",
+      data: {
+        session_id,
+        role: "assistant",
+        message_length: reply.length,
+        timestamp: new Date().toISOString()
+      }
+    })
+  });
 
   inputField.disabled = false;
   sendBtn.disabled = false;
@@ -190,6 +225,19 @@ async function handleSend() {
   }
 
   if (parsed?.recommendations) {
+    // Log Start of Decision Phase
+    fetch("/.netlify/functions/log", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        collection: "decision_phase_start",
+        data: {
+          session_id,
+          timestamp: new Date().toISOString()
+        }
+      })
+    });
+
     addMessage(
       "That makes perfect sense! I have now selected the hotels that fit your preferences best. Please select the one you like best!",
       "ai"
@@ -200,7 +248,27 @@ async function handleSend() {
       .filter(Boolean);
 
     renderHotels(matchedHotels);
-    document.querySelector(".chat-input").remove();
+    logRecommendations(matchedHotels);
+
+    // Log Recommendations (previously only defined)
+    fetch("/.netlify/functions/log", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        collection: "recommendations",
+        data: {
+          session_id,
+          recommendation_count: matchedHotels.length,
+          recommendation_source: "ai",
+          recommendation_order: matchedHotels.map(h => h.id),
+          timestamp: new Date().toISOString()
+        }
+      })
+    });
+
+    const inputWrapper = document.querySelector(".chat-input");
+    if (inputWrapper) inputWrapper.remove();
+
   } else {
     addMessage(reply, "ai");
   }
@@ -237,10 +305,38 @@ function renderHotels(hotels) {
     `;
     div.addEventListener("click", () => {
       openHotelModal(hotel, () => {
+        fetch("/.netlify/functions/log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            collection: "decisions",
+            data: {
+              session_id,
+              selected_hotel_id: hotel.id,
+              selected_rank: index + 1,
+              timestamp: new Date().toISOString()
+            }
+          })
+        });
+
+        // Log End of Session
+        fetch("/.netlify/functions/log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            collection: "session_end",
+            data: {
+              session_id,
+              end_reason: "hotel_selected",
+              timestamp: new Date().toISOString()
+            }
+          })
+        });
+
         redirectToQualtrics({
           hotel: hotel,
           rank: index + 1,
-          startTime: startTime
+          startTime: session_start
         });
       });
     });

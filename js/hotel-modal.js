@@ -75,6 +75,23 @@ function openHotelModal(hotel, onSelect) {
 
   // Button-Handler
   selectBtn.onclick = () => {
+    const sessionEnd = new Date().toISOString();
+
+    fetch("/.netlify/functions/log", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        collection: "session_end",
+        data: {
+          session_id,
+          user_id,
+          condition,
+          session_end: sessionEnd,
+          selected_hotel_id: hotel.id,
+          selected_rank: hotel.rank
+        }
+      })
+    });
     closeHotelModal();
     if (typeof onSelect === "function") {
       onSelect();
