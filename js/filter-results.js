@@ -220,13 +220,14 @@ function renderSingleFilter(key, def) {
         </label>
       `).join("")}
     `;
+    
+    filterState[key] = [];
 
     wrapper.querySelectorAll("input").forEach(cb => {
       cb.addEventListener("change", () => {
         const oldValue = [...filterState[key]];
-        filterState[key] = Array.from(
-          wrapper.querySelectorAll("input:checked")
-        ).map(i => i.value);
+        filterState[key] = Array.from(wrapper.querySelectorAll("input:checked"))
+          .map(i => i.value);
         applyFilters();
         logFilterChange(key, filterState[key], oldValue);
       });
@@ -290,7 +291,7 @@ function renderHotels(list) {
         redirectToQualtrics({
           hotel: hotel,
           rank: index + 1,
-          startTime: startTime
+          startTime: session_start
         });
       });
     });

@@ -34,10 +34,10 @@ const SYSTEM_PROMPT = `
 You are a hotel selection assistant in a scientific study.
 
 YOUR TASKS:
-1. Ask the user the following questions, one after another:
-   - preferred price range
-   - preferred hotel star category
-   - minimum acceptable guest rating
+1. Ask the user the following questions, one after another, and indicate the expected range for his answers:
+   - preferred price range (e.g., €50 - €150 per night)
+   - preferred hotel star category (max. 5 stars)
+   - minimum acceptable guest rating (max. 10.0)
 
 2. Ask ONLY ONE question at a time.
 3. Briefly acknowledge the user's previous answer before asking the next question.
@@ -68,7 +68,7 @@ IMPORTANT:
 let messages = [
   { role: "system", content: SYSTEM_PROMPT },
   { role: "system", content: "Hier ist die Hotelliste:\n" + JSON.stringify(HOTELS) },
-  { role: "assistant", content: "That sounds like a great idea! Vancouver is a great place to stay. Let me help you find the perfect hotel. Should we start?" }
+  { role: "assistant", content: "Excellent choice - Vancouver is a great place to stay! Let's find the perfect hotel for your city trip. Please let me know when you are ready." }
 ];
 
 // ==========================
@@ -239,7 +239,7 @@ async function handleSend() {
     });
 
     addMessage(
-      "That makes perfect sense! I have now selected the hotels that fit your preferences best. Please select the one you like best!",
+      "Good choice! I have now selected the hotels that fit your preferences best. Please select the one you like best!",
       "ai"
     );
 
