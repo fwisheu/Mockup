@@ -252,6 +252,7 @@ async function handleSend() {
           session_id,
           condition,
           hotel_order: matchedHotels.map(h => h.id),
+          hotel_count: matchedHotels.length,
           timestamp: new Date().toISOString()
         }
       })
@@ -295,6 +296,7 @@ function renderHotels(hotels) {
       </div>
     `;
     div.addEventListener("click", () => {
+      hotel.rank = index + 1;
       openHotelModal(hotel, () => {
         redirectToQualtrics({
           hotel: hotel,

@@ -64,6 +64,7 @@ function logChoiceSet(hotels) {
         session_id,
         condition,
         hotel_order: hotels.map(h => h.id),
+        hotel_count: hotels.length,
         timestamp: new Date().toISOString()
       }
     })
@@ -289,6 +290,7 @@ function renderHotels(list) {
 
     // Klick → Modal → Qualtrics
     card.addEventListener("click", () => {
+      hotel.rank = index + 1;
       openHotelModal(hotel, () => {
         redirectToQualtrics({
           hotel: hotel,
