@@ -19,7 +19,7 @@ export async function handler(event, context) {
     const completion = await openai.chat.completions.create({
       model: "gpt-5-mini",
       messages,
-      max_tokens: 300
+      max_completion_tokens: 300
     });
 
     return {
