@@ -83,11 +83,9 @@ function openHotelModal(hotel, onSelect) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         collection: "sessions",
+        operation: "update",
+        filter: { session_id: window.STUDY.session_id },
         data: {
-          experiment_id: window.STUDY.experiment_id,
-          session_id: window.STUDY.session_id,
-          user_id: window.STUDY.user_id,
-          condition: window.STUDY.condition,
           session_end: sessionEnd,
           time_to_decision: timeToDecision,
           selected_hotel_id: hotel.id,

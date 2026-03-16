@@ -13,8 +13,18 @@ export async function handler(event) {
     db = client.db("searchhotels_data"); // DB-Name
   }
 
-  const result = await db.collection(body.collection).insertOne(body.data);
+  if (body.operation === "update") {
+    const result = await db.collection(body.collection).updateOne(
+      { session_id: body.filter.session_id },
+      { $set: body.data }
+    );
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ ok: true, modifiedCount: result.modifiedCount })
+    };
+  }
 
+  const result = await db.collection(body.collection).insertOne(body.data);
   return {
     statusCode: 200,
     body: JSON.stringify({ ok: true, insertedId: result.insertedId })
