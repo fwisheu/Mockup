@@ -22,9 +22,14 @@ export async function handler(event, context) {
       max_completion_tokens: 300
     });
 
+    const message = completion.choices[0].message;
+    const content = Array.isArray(message.content)
+      ? message.content.map(b => b.text || "").join("")
+      : message.content;
+
     return {
       statusCode: 200,
-      body: JSON.stringify(completion.choices[0].message)
+      body: JSON.stringify({ content })
     };
   } catch (err) {
     console.error("OpenAI error:", err);
