@@ -1,5 +1,5 @@
 // ==========================
-// Study-Kontext
+// Kontext
 // ==========================
 const { user_id, session_id, condition, session_start } = window.STUDY;
 
@@ -170,11 +170,13 @@ async function handleSend() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      collection: "chat_messages",
+      collection: "interactions",
       data: {
+        experiment_id: window.STUDY.experiment_id,
         session_id,
+        type: "chat_message",
         role: "user",
-        message_length: userText.length,
+        message_content: userText,
         timestamp: new Date().toISOString()
       }
     })
@@ -200,11 +202,13 @@ async function handleSend() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      collection: "chat_messages",
+      collection: "interactions",
       data: {
+        experiment_id: window.STUDY.experiment_id,
         session_id,
+        type: "chat_message",
         role: "assistant",
-        message_length: reply.length,
+        message_content: reply,
         timestamp: new Date().toISOString()
       }
     })
@@ -225,18 +229,6 @@ async function handleSend() {
   }
 
   if (parsed?.recommendations) {
-    // Log Start of Decision Phase
-    fetch("/api/log", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        collection: "sessions",
-        data: {
-          session_id,
-          timestamp: new Date().toISOString()
-        }
-      })
-    });
 
     addMessage(
       "Good choice! I have now selected the hotels that fit your preferences best. Please select the one you like best!",
@@ -248,19 +240,18 @@ async function handleSend() {
       .filter(Boolean);
 
     renderHotels(matchedHotels);
-    logRecommendations(matchedHotels);
 
-    // Log Recommendations (previously only defined)
+    // Log Choice Set
     fetch("/api/log", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        collection: "recommendations",
+        collection: "choice_sets",
         data: {
+          experiment_id: window.STUDY.experiment_id,
           session_id,
-          recommendation_count: matchedHotels.length,
-          recommendation_source: "ai",
-          recommendation_order: matchedHotels.map(h => h.id),
+          condition,
+          hotel_order: matchedHotels.map(h => h.id),
           timestamp: new Date().toISOString()
         }
       })
@@ -305,34 +296,6 @@ function renderHotels(hotels) {
     `;
     div.addEventListener("click", () => {
       openHotelModal(hotel, () => {
-        fetch("/api/log", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            collection: "decisions",
-            data: {
-              session_id,
-              selected_hotel_id: hotel.id,
-              selected_rank: index + 1,
-              timestamp: new Date().toISOString()
-            }
-          })
-        });
-
-        // Log End of Session
-        fetch("/api/log", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            collection: "sessions",
-            data: {
-              session_id,
-              end_reason: "hotel_selected",
-              timestamp: new Date().toISOString()
-            }
-          })
-        });
-
         redirectToQualtrics({
           hotel: hotel,
           rank: index + 1,

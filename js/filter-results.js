@@ -30,9 +30,11 @@ function logFilterChange(filterName, newValue, oldValue) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      collection: "interaction_summary",
+      collection: "interactions",
       data: {
+        experiment_id: window.STUDY.experiment_id,
         session_id,
+        type: "filter_change",
         filter_name: filterName,
         old_value: oldValue,
         new_value: newValue,
@@ -56,11 +58,11 @@ function logChoiceSet(hotels) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      collection: "recommendations",
+      collection: "choice_sets",
       data: {
+        experiment_id: window.STUDY.experiment_id,
         session_id,
         condition,
-        hotel_count: hotels.length,
         hotel_order: hotels.map(h => h.id),
         timestamp: new Date().toISOString()
       }

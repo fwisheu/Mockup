@@ -54,21 +54,16 @@ function generateId(prefix) {
 }
 
 document.getElementById("start-btn").addEventListener("click", () => {
-  // User
   let user_id = localStorage.getItem("user_id");
   if (!user_id) {
     user_id = generateId("u");
     localStorage.setItem("user_id", user_id);
   }
 
-  // Session
   const session_id = generateId("s");
-  const session_start = new Date().toISOString();
-
-  // Condition
+  const session_start = Date.now();
   const condition = Math.random() < 0.5 ? 1 : 0;
 
-  // Persist session context
   sessionStorage.setItem("STUDY_SESSION", JSON.stringify({
     user_id,
     session_id,
@@ -76,7 +71,22 @@ document.getElementById("start-btn").addEventListener("click", () => {
     condition
   }));
 
-  // Redirect
+  // Log Session Start
+  fetch("/api/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collection: "sessions",
+      data: {
+        experiment_id: "Test_01",
+        session_id,
+        user_id,
+        condition,
+        session_start: new Date(session_start).toISOString()
+      }
+    })
+  });
+
   if (condition === 1) {
     window.location.href = "results-llm.html";
   } else {

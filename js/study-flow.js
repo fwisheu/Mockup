@@ -5,6 +5,7 @@ if (!STUDY) {
 }
 
 window.STUDY = STUDY;
+window.STUDY.experiment_id = "Test_01";
 
 function redirectToQualtrics({ hotel, rank }) {
   const base =
