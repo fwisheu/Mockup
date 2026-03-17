@@ -14,7 +14,7 @@ const FILTER_CATEGORIES = {
 // ==========================
 const FILTER_DEFINITIONS = {
   price: {
-    label: "Maximum price (€)",
+    label: "Maximum price (USD)",
     subLabel: "Price per night",
     category: "price_quality",
     type: "range",
@@ -22,7 +22,7 @@ const FILTER_DEFINITIONS = {
     min: 50,
     max: 150,
     step: 5,
-    unit: " €"
+    unit: " USD"
   },
 
   stars: {
@@ -45,14 +45,14 @@ const FILTER_DEFINITIONS = {
     type: "select",
     attribute: "rating", 
     options: [
-      { value: 7, label: "7.0+" },
-      { value: 8, label: "8.0+" },
-      { value: 9, label: "9.0+" }
+      { value: 7, label: "7.0+ Good" },
+      { value: 8, label: "8.0+ Very Good" },
+      { value: 9, label: "9.0+ Exceptional" }
     ]
   },
 
   distance: {
-    label: "Distance to city center (km)",
+    label: "Distance to city center (mi)",
     subLabel: "Distance to city center",
     category: "location",
     type: "range",
@@ -60,7 +60,7 @@ const FILTER_DEFINITIONS = {
     min: 0,
     max: 5,
     step: 0.5,
-    unit: " km"
+    unit: " miles"
   },
 
   pool: {

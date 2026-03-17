@@ -1,6 +1,12 @@
 // ==========================
 // Hotel Modal – zentral
 // ==========================
+function getRatingLabel(rating) {
+  if (rating >= 9.0) return "Exceptional";
+  if (rating >= 8.0) return "Very Good";
+  if (rating >= 7.0) return "Good";
+  return "Pleasant";
+}
 
 // Modal-HTML einmalig erzeugen
 (function createHotelModal() {
@@ -13,17 +19,31 @@
     <div class="modal-content">
 
       <img id="modal-main-image" class="modal-main-image" />
-
       <div class="modal-gallery"></div>
 
       <div class="modal-details">
-        <h2 id="modal-hotel-name"></h2>
-        <p id="modal-hotel-meta"></p>
+
+        <div class="modal-card-header">
+          <div class="hotel-title" id="modal-hotel-name"></div>
+          <div class="hotel-stars" id="modal-hotel-stars"></div>
+        </div>
+
+        <p id="modal-hotel-description"></p>
+
+        <div class="modal-card-footer">
+          <div id="modal-hotel-rating" class="hotel-rating"></div>
+          <div id="modal-hotel-price" class="hotel-price"></div>
+        </div>
+
+        <hr class="modal-divider">
+        <div id="modal-hotel-attributes"></div>
+        <hr class="modal-divider">
+
       </div>
 
       <div class="modal-actions">
-        <button id="select-hotel-btn">Book Now</button>
         <button id="close-hotel-btn">Close</button>
+        <button id="select-hotel-btn">Book Now</button>
       </div>
 
     </div>
@@ -41,13 +61,80 @@ function openHotelModal(hotel, onSelect) {
   const gallery = modal.querySelector(".modal-gallery");
   const nameEl = document.getElementById("modal-hotel-name");
   const metaEl = document.getElementById("modal-hotel-meta");
+  const descEl = document.getElementById("modal-hotel-description");
+  const attrsEl = document.getElementById("modal-hotel-attributes");
   const selectBtn = document.getElementById("select-hotel-btn");
   const closeBtn = document.getElementById("close-hotel-btn");
   const overlay = modal.querySelector(".modal-overlay");
 
   // Inhalte setzen
-  nameEl.textContent = hotel.name;
-  metaEl.textContent = `${hotel.attributes.stars} Stars · Rating ${hotel.attributes.rating}/10 · €${hotel.attributes.price} per night`;
+  document.getElementById("modal-hotel-name").innerHTML = `
+  ${hotel.name} <span class="hotel-stars">${"★".repeat(hotel.attributes.stars)}</span>
+  `;
+  document.getElementById("modal-hotel-rating").innerHTML = `
+    <span class="rating-badge">${hotel.attributes.rating.toFixed(1)}</span>
+    <span class="rating-label">${getRatingLabel(hotel.attributes.rating)}</span>
+    <span class="rating-count">${hotel.attributes.reviewCount} reviews</span>
+  `;
+  const priceEl = document.getElementById("modal-hotel-price");
+  priceEl.textContent = `$${hotel.attributes.price} per night`;
+  priceEl.className = "modal-price";
+  descEl.textContent = hotel.description || "";
+  // Beschreibung
+  descEl.textContent = hotel.description || "";
+
+  // Attribute dynamisch aus ACTIVE_FILTERS
+  attrsEl.innerHTML = "";
+
+  const ATTR_LABELS = {
+    breakfast: "Breakfast included",
+    pool: "Pool",
+    sauna: "Sauna",
+    fitness: "Fitness facilities",
+    aircon: "Air conditioning",
+    freeCancellation: "Free cancellation",
+    parkingFree: "Free parking",
+    parkingPaid: "Paid parking available",
+    distance: "Distance to city centre",
+    accommodationType: "Accommodation type"
+  };
+
+  const TYPE_LABELS = {
+    hotel: "Hotel",
+    apartment: "Apartment",
+    holiday_home: "Holiday home",
+    guesthouse: "Guesthouse",
+    bnb: "Bed & Breakfast"
+  };
+
+  // Nur Filter anzeigen die nicht schon in meta stehen (price, stars, minRating)
+  const SKIP = ["price", "stars", "minRating"];
+
+  (typeof ACTIVE_FILTERS !== "undefined" ? ACTIVE_FILTERS : [])
+    .filter(key => !SKIP.includes(key))
+    .forEach(key => {
+      const label = ATTR_LABELS[key];
+      const val = hotel.attributes[key];
+      if (!label || val === undefined) return;
+
+      const row = document.createElement("div");
+      row.className = "modal-attr-row";
+
+      let display;
+      if (typeof val === "boolean") {
+        display = val ? "✓" : "✗";
+        row.classList.add(val ? "attr-yes" : "attr-no");
+      } else if (key === "distance") {
+        display = `${val} miles`;
+      } else if (key === "accommodationType") {
+        display = TYPE_LABELS[val] || val;
+      } else {
+        display = val;
+      }
+
+      row.innerHTML = `<span class="attr-label">${label}</span><span class="attr-value">${display}</span>`;
+      attrsEl.appendChild(row);
+    });
 
   // Hauptbild
   const cover =

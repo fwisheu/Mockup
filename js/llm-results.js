@@ -8,6 +8,13 @@ const inputField = document.getElementById("chat-input");
 const sendBtn = document.getElementById("send-btn");
 const hotelContainer = document.getElementById("llm-hotels");
 
+function getRatingLabel(rating) {
+  if (rating >= 9.0) return "Exceptional";
+  if (rating >= 8.0) return "Very Good";
+  if (rating >= 7.0) return "Good";
+  return "Pleasant";
+}
+
 // ==========================
 // Fetch mit Timeout
 // ==========================
@@ -35,9 +42,9 @@ You are a hotel selection assistant in a scientific study.
 
 YOUR TASKS:
 1. Ask the user the following questions, one after another, and indicate the expected range for his answers:
-   - preferred price range (e.g., €50 - €150 per night)
+   - preferred price range (e.g., $50 - $150 per night)
    - preferred hotel star category (max. 5 stars)
-   - minimum acceptable guest rating (max. 10.0)
+   - minimum acceptable guest rating (up to 10.0)
 
 2. Ask ONLY ONE question at a time.
 3. Briefly acknowledge the user's previous answer before asking the next question.
@@ -285,9 +292,12 @@ function renderHotels(hotels) {
           <div class="hotel-title">${hotel.name}</div>
           <div class="hotel-stars">${"★".repeat(hotel.attributes.stars)}</div>
         </div>
+        <div class="hotel-description">${hotel.description || ""}</div>
         <div class="hotel-footer">
           <div class="hotel-rating">
-            Guest Rating ${hotel.attributes.rating}/10
+            <span class="rating-badge">${hotel.attributes.rating.toFixed(1)}</span>
+            <span class="rating-label">${getRatingLabel(hotel.attributes.rating)}</span>
+            <span class="rating-count">${hotel.attributes.reviewCount} reviews</span>
           </div>
         </div>
       </div>

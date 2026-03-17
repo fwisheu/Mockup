@@ -25,6 +25,13 @@ Object.entries(FILTER_DEFINITIONS).forEach(([key, def]) => {
   }
 });
 
+function getRatingLabel(rating) {
+  if (rating >= 9.0) return "Exceptional";
+  if (rating >= 8.0) return "Very Good";
+  if (rating >= 7.0) return "Good";
+  return "Pleasant";
+}
+
 function logFilterChange(filterName, newValue, oldValue) {
   fetch("/api/log", {
     method: "POST",
@@ -174,7 +181,7 @@ function renderSingleFilter(key, def) {
     wrapper.innerHTML = `
       ${def.subLabel ? "" : `<label>${def.label}</label>`}
       <select data-filter="${key}">
-        <option value="">Alle</option>
+        <option value="">All</option>
         ${def.options.map(o =>
           `<option value="${o.value}">${o.label}</option>`
         ).join("")}
@@ -276,15 +283,19 @@ function renderHotels(list) {
           </div>
         </div>
 
+        <div class="hotel-description">${hotel.description || ""}</div>
+
         <div class="hotel-footer">
           <div class="hotel-rating">
-            Guest Rating ${hotel.attributes.rating}/10
+            <span class="rating-badge">${hotel.attributes.rating.toFixed(1)}</span>
+            <span class="rating-label">${getRatingLabel(hotel.attributes.rating)}</span>
+            <span class="rating-count">${hotel.attributes.reviewCount} reviews</span>
           </div>
         </div>
       </div>
 
       <div class="hotel-price">
-        €${hotel.attributes.price} per night
+        $${hotel.attributes.price} per night
       </div>
     `;
 

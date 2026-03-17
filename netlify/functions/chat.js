@@ -22,15 +22,9 @@ export async function handler(event, context) {
       max_completion_tokens: 300
     });
 
-    const message = completion.choices[0].message;
-    console.log("RAW RESPONSE:", JSON.stringify(completion.choices[0].message));
-    const content = Array.isArray(message.content)
-      ? message.content.map(b => b.text || "").join("")
-      : message.content;
-
     return {
       statusCode: 200,
-      body: JSON.stringify({ content })
+      body: JSON.stringify(completion.choices[0].message)
     };
   } catch (err) {
     console.error("OpenAI error:", err);
