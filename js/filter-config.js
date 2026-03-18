@@ -142,6 +142,7 @@ const ACTIVE_FILTERS = [
   "stars",
   "minRating",
   "distance",
+  "accommodationType",
   "pool",
   "sauna",
   "fitness",
@@ -149,6 +150,5 @@ const ACTIVE_FILTERS = [
   "breakfast",
   "freeCancellation",
   "parkingFree",
-  "parkingPaid",
-  "accommodationType"
+  "parkingPaid"
 ];

@@ -681,10 +681,10 @@ body {
   }
 
   .hotel-price {
-    align-self: flex-start;
+    align-items: left;
     margin-top: 8px;
     margin-left: 7px;
-    font-size: 18px;
+    font-size: 17px;
     padding: 1px;
     font-weight: 600;
   }

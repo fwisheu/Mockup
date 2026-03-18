@@ -208,11 +208,11 @@ const HOTELS = [
       accommodationType: "hotel"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1587874522487-fe10e954d035?w=600",
+      cover: "images/h7/h7_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1587874522487-fe10e954d035?w=800",
-        "https://images.unsplash.com/photo-1587874522487-fe10e954d035?w=800",
-        "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=800"
+        "images/h7/h7_01.jpg",
+        "images/h7/h7_02.jpg",
+        "images/h7/h7_03.jpg"
       ]
     }
   },
@@ -239,11 +239,11 @@ const HOTELS = [
       accommodationType: "holiday_home"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1439130490301-25e322d88054?w=600",
+      cover: "images/h8/h8_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800",
-        "https://images.unsplash.com/photo-1561501900-3701fa6a0864?w=800",
-        "https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=800"
+        "images/h8/h8_01.jpg",
+        "images/h8/h8_02.jpg",
+        "images/h8/h8_03.jpg"
       ]
     }
   },
