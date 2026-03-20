@@ -89,7 +89,7 @@ function openHotelModal(hotel, onSelect) {
   const ATTR_LABELS = {
     breakfast: "Breakfast included",
     pool: "Pool",
-    sauna: "Sauna",
+    wellness: "Wellness/Spa",
     fitness: "Fitness facilities",
     aircon: "Air conditioning",
     freeCancellation: "Free cancellation",

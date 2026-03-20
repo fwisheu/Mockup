@@ -3,23 +3,23 @@ const HOTELS = [
   {
     id: "h1",
     name: "Harbourview Hotel Vancouver",
-    description: "A stylish 4-star hotel located just steps from Vancouver's iconic waterfront. " +
-    "Guests enjoy modern rooms with harbour views, a fully equipped fitness centre, and convenient access to the city's top attractions.",
+    description: "Situated right on Vancouver's iconic waterfront, the Harbourview puts you at the center of the city's best offerings. " +
+    "Our guests start their days with an incredible view on the harbour and a breath of fresh sea air.",
     attributes: {
-      price: 100,
+      price: 189,
       stars: 4,
       rating: 8.4,
       reviewCount: 284,
-      distance: 0.5,
+      distance: 0.3,
       breakfast: true,
       pool: false,
-      sauna: false,
+      wellness: false,
       fitness: true,
       aircon: true,
       freeCancellation: true,
       parkingFree: false,
       parkingPaid: true,
-      accommodationType: "hotel",
+      accommodationType: "hotel"
     },
     images: {
       cover: "images/h1/h1_01.jpg",
@@ -34,17 +34,17 @@ const HOTELS = [
   {
     id: "h2",
     name: "Granville Suites",
-    description: "A charming apartment-style property in the heart of Granville Street, perfect for travellers who value space and independence. " + 
-    "Breakfast is included and free parking makes it an excellent value choice.",
+    description: "Charming apartments located in the heart of Granville Street, which is known for its vibrant dining and entertainment scene. " +
+    "Guests that value space and independence have come to the right place.",
     attributes: {
-      price: 90,
+      price: 155,
       stars: 3,
       rating: 9.1,
       reviewCount: 521,
-      distance: 1.2,
+      distance: 1.3,
       breakfast: true,
       pool: false,
-      sauna: false,
+      wellness: false,
       fitness: false,
       aircon: true,
       freeCancellation: true,
@@ -65,17 +65,17 @@ const HOTELS = [
   {
     id: "h3",
     name: "Pacific Crown Hotel",
-    description: "A luxury 5-star hotel offering an impressive pool and sauna facilities. " + 
-    "Ideally suited for guests seeking premium amenities, though its location requires a short commute to the city centre.",
+    description: "The Pacific Crown is a luxurious 5-star hotel with a long-standing reputation for providing exclusive service. " +
+    "With its prime location in the heart of Vancouver, it offers easy access to Vancouver's top attractions and vibrant culture.",
     attributes: {
-      price: 110,
+      price: 229,
       stars: 5,
       rating: 7.8,
       reviewCount: 173,
-      distance: 2.0,
+      distance: 1.2,
       breakfast: false,
       pool: true,
-      sauna: true,
+      wellness: true,
       fitness: true,
       aircon: true,
       freeCancellation: false,
@@ -96,17 +96,17 @@ const HOTELS = [
   {
     id: "h4",
     name: "Downtown Skyline Hotel",
-    description: "A well-appointed hotel in the heart of downtown Vancouver with stunning city views. " + 
-    "Featuring a rooftop pool, fitness centre, and breakfast included, it combines comfort with an unbeatable central location.",
+    description: "Sitting at the heart of Vancouver's city centre with views that genuinely take your breath away, " +
+    "the Downtown Skyline puts everything the city has to offer right on your doorstep.",
     attributes: {
-      price: 110,
+      price: 219,
       stars: 4,
       rating: 8.7,
       reviewCount: 412,
-      distance: 0.8,
+      distance: 0.5,
       breakfast: true,
       pool: true,
-      sauna: false,
+      wellness: false,
       fitness: true,
       aircon: true,
       freeCancellation: true,
@@ -127,17 +127,17 @@ const HOTELS = [
   {
     id: "h5",
     name: "The Westmount Grand",
-    description: "One of Vancouver's finest 5-star properties, offering an exceptional level of service and amenities. " + 
-    "Free parking, a full spa, pool, and breakfast make this hotel a top choice for discerning travellers.",
+    description: "A Vancouver institution known for its attentive service and quietly refined atmosphere. " +
+    "Our staff takes care of every detail of your stay from arrival to departure. We are committed to providing an exceptional experience.",
     attributes: {
-      price: 130,
+      price: 319,
       stars: 5,
       rating: 9.3,
       reviewCount: 638,
-      distance: 1.5,
+      distance: 0.9,
       breakfast: true,
       pool: true,
-      sauna: true,
+      wellness: true,
       fitness: true,
       aircon: true,
       freeCancellation: true,
@@ -158,17 +158,17 @@ const HOTELS = [
   {
     id: "h6",
     name: "Maple Leaf Inn",
-    description: "A cosy guesthouse offering budget-friendly accommodation with free parking. " + 
-    "While amenities are limited, it provides a quiet and homely atmosphere for travellers on a tighter budget.",
+    description: "A warm, unpretentious guesthouse that offers everything needed to make your stay comfortable. " +
+    "Clean rooms, a genuine welcome, and fair rates make it ideal for guests who want a reliable base without unnecessary extras.",
     attributes: {
-      price: 85,
+      price: 129,
       stars: 3,
       rating: 7.2,
       reviewCount: 97,
-      distance: 2.8,
+      distance: 1.7,
       breakfast: false,
       pool: false,
-      sauna: false,
+      wellness: false,
       fitness: false,
       aircon: false,
       freeCancellation: false,
@@ -189,17 +189,17 @@ const HOTELS = [
   {
     id: "h7",
     name: "North Shore Boutique Hotel",
-    description: "A boutique hotel on Vancouver's scenic North Shore, blending contemporary design with a personal touch. " + 
-    "Breakfast is included and the fitness centre caters well to active travellers.",
+    description: "A carefully considered boutique hotel with lots of character located on Vancouver's scenic north shore. " +
+    "It offers a quieter, more personal alternative to the bustling city centre and its massive downtown hotels.",
     attributes: {
-      price: 95,
+      price: 175,
       stars: 4,
       rating: 8.0,
       reviewCount: 208,
-      distance: 1.9,
+      distance: 3.1,
       breakfast: true,
       pool: false,
-      sauna: false,
+      wellness: false,
       fitness: true,
       aircon: true,
       freeCancellation: true,
@@ -220,23 +220,23 @@ const HOTELS = [
   {
     id: "h8",
     name: "Emerald Bay Resort",
-    description: "A resort-style property offering a full range of leisure facilities including pool, sauna, and fitness centre. " + 
-    "Free parking and a scenic setting make it a great retreat, though it sits further from the city centre.",
+    description: "The Emerald Bay offers something downtown hotels simply cannot: space, calm, and a genuine sense of retreat. " +
+    "Come back each evening to a property that feels worlds away from the city buzz.",
     attributes: {
-      price: 125,
+      price: 259,
       stars: 5,
       rating: 9.0,
       reviewCount: 156,
-      distance: 3.0,
+      distance: 3.8,
       breakfast: true,
       pool: true,
-      sauna: true,
+      wellness: true,
       fitness: true,
       aircon: true,
       freeCancellation: false,
       parkingFree: true,
       parkingPaid: false,
-      accommodationType: "holiday_home"
+      accommodationType: "hotel"
     },
     images: {
       cover: "images/h8/h8_01.jpg",
@@ -251,17 +251,17 @@ const HOTELS = [
   {
     id: "h9",
     name: "CityLights Hotel Vancouver",
-    description: "A modern 4-star hotel offering a prime downtown location and reliable amenities including breakfast and a fitness centre. " + 
+    description: "A modern 4-star hotel offering a prime downtown location and a wonderful breakfast. " +
     "An excellent all-round choice for both leisure and business travellers.",
     attributes: {
-      price: 105,
+      price: 199,
       stars: 4,
       rating: 8.5,
       reviewCount: 349,
-      distance: 1.0,
+      distance: 0.6,
       breakfast: true,
       pool: false,
-      sauna: false,
+      wellness: false,
       fitness: true,
       aircon: true,
       freeCancellation: true,
@@ -282,17 +282,17 @@ const HOTELS = [
   {
     id: "h10",
     name: "Seaside Comfort Hotel",
-    description: "A no-frills 3-star hotel offering comfortable rooms at an affordable price point. " + 
-    "Air conditioning and free cancellation provide peace of mind for budget-conscious travellers.",
+    description: "Comfortable, unpretentious, and fairly priced — the Seaside Comfort is exactly what it sounds like. " +
+    "Well-kept rooms, a friendly team, and a location that means you're never far from what the city has to offer.",
     attributes: {
-      price: 88,
+      price: 139,
       stars: 3,
       rating: 7.5,
       reviewCount: 183,
-      distance: 2.3,
+      distance: 1.4,
       breakfast: false,
       pool: false,
-      sauna: false,
+      wellness: false,
       fitness: false,
       aircon: true,
       freeCancellation: true,
@@ -313,17 +313,17 @@ const HOTELS = [
   {
     id: "h11",
     name: "Lions Gate Hotel",
-    description: "A polished 4-star hotel near the Lions Gate Bridge, offering a pool, fitness centre, and breakfast. " + 
-    "Its high guest rating reflects consistently strong service and well-maintained facilities.",
+    description: "Named after Vancouver's most iconic landmark, the Lions Gate has earned a loyal following " +
+    "through years of consistent, attentive hospitality. A hotel that takes pride in the details and that shows.",
     attributes: {
-      price: 115,
+      price: 235,
       stars: 4,
       rating: 8.8,
       reviewCount: 467,
-      distance: 1.6,
+      distance: 1.0,
       breakfast: true,
       pool: true,
-      sauna: false,
+      wellness: false,
       fitness: true,
       aircon: true,
       freeCancellation: true,
@@ -344,17 +344,17 @@ const HOTELS = [
   {
     id: "h12",
     name: "Pacific Pearl Luxury Hotel",
-    description: "Vancouver's premier luxury hotel, combining a central location with the highest standard of amenities. " + 
-    "With a perfect guest rating, pool, sauna, free parking, and breakfast, it represents the pinnacle of city hospitality.",
+    description: "One of Vancouver's most celebrated addresses, refined over years of dedication to the guest experience. " +
+    "Perfectly positioned in downtown Vancouver, with a level of service that sets it apart from everything else in the city.",
     attributes: {
-      price: 140,
+      price: 349,
       stars: 5,
       rating: 9.5,
       reviewCount: 724,
-      distance: 0.7,
+      distance: 0.4,
       breakfast: true,
       pool: true,
-      sauna: true,
+      wellness: true,
       fitness: true,
       aircon: true,
       freeCancellation: true,

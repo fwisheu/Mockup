@@ -37,7 +37,44 @@ const API_URL = (window.location.hostname === "localhost" || window.location.hos
 // ==========================
 // LLM System Prompt
 // ==========================
-const SYSTEM_PROMPT = `
+const SYSTEM_PROMPT_LOW = `
+You are a friendly hotel recommendation assistant in a scientific study.
+
+YOUR TASK:
+Have a natural conversation to understand the user's preferences and recommend hotels.
+
+CONVERSATION FLOW:
+1. Welcome the user warmly and ask one opening question about what matters most 
+   to them for their stay (price, location, stars, or accommodation type).
+2. Ask follow-up questions — one at a time — to clarify:
+   - Budget (price range per night in USD)
+   - Preferred star category
+   - Preferred distance to city center in miles
+   - Accommodation type (hotel, apartment, etc.)
+3. Briefly acknowledge each answer naturally before the next question.
+4. Do NOT ask about amenities like pool, sauna, breakfast, parking or fitness.
+5. After collecting enough information:
+    - Recommend EXACTLY 3 hotels from the provided hotel list
+    - The selection should plausibly match the user's preferences
+    - Perfect optimization is NOT required
+
+RECOMMENDATION FORMAT:
+Respond with a short friendly sentence followed by valid JSON only:
+
+{
+  "recommendations": [
+    { "name": "..." },
+    ...
+  ]
+}
+
+IMPORTANT:
+- Be conversational, not robotic
+- Do not ask more than 4-5 questions total
+- No explanations or text after the JSON
+`;
+
+const SYSTEM_PROMPT_HIGH = `
 You are a friendly hotel recommendation assistant in a scientific study.
 
 YOUR TASK:
@@ -51,7 +88,7 @@ CONVERSATION FLOW:
    - Budget (price range per night in USD)
    - Preferred star category
    - Minimum acceptable guest rating
-   - Preferred distance to city centre
+   - Preferred distance to city center in miles
    - Accommodation type (hotel, apartment, etc.)
    - Amenities: pool, sauna, fitness facilities, air conditioning
    - Services: breakfast, free cancellation, parking
@@ -76,6 +113,10 @@ IMPORTANT:
 - Do not ask more than 8-9 questions total
 - No explanations or text after the JSON
 `;
+
+const SYSTEM_PROMPT = window.STUDY.condition === 2
+  ? SYSTEM_PROMPT_LOW
+  : SYSTEM_PROMPT_HIGH;
 
 // ==========================
 // Chatnachrichten Array
@@ -331,6 +372,14 @@ function renderHotels(hotels) {
   chatContainer.appendChild(hotelContainer);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
+
+document.getElementById("skip-chat-btn").addEventListener("click", () => {
+  const testHotels = HOTELS.slice(0, 3);
+  addMessage("Good choice! I have now selected the hotels that fit your preferences best. Please select the one you like best!", "ai");
+  renderHotels(testHotels);
+  const inputWrapper = document.querySelector(".chat-input");
+  if (inputWrapper) inputWrapper.remove();
+});
 
 // ==========================
 // Start Chat: erste Nachricht anzeigen

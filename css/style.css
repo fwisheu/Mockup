@@ -666,6 +666,14 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .results-title {
+    font-size: 20px;
+  }
+
+  .search-meta {
+    font-size: 15px;
+  }
+
   #filters {
     position: static;
   }

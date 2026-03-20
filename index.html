@@ -41,10 +41,19 @@
   </p>
 
   <div style="margin-top: 24px;">
-    <button id="start-btn"
-      style="font-size: 18px; padding: 12px 28px; cursor: pointer;">
+    <button id="start-btn" style="font-size: 18px; padding: 12px 28px; cursor: pointer;">
       Start
     </button>
+  </div>
+
+  <hr style="margin: 32px 0; border-style: dashed;">
+
+  <div style="font-size: 13px; color: #999; margin-bottom: 8px;">Test buttons (will be removed before launch):</div>
+  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <button class="test-btn" data-condition="0" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C0: Filter Low</button>
+    <button class="test-btn" data-condition="1" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C1: Filter High</button>
+    <button class="test-btn" data-condition="2" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C2: Chat Low</button>
+    <button class="test-btn" data-condition="3" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C3: Chat High</button>
   </div>
 </main>
 
@@ -53,7 +62,7 @@ function generateId(prefix) {
   return prefix + "_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 }
 
-document.getElementById("start-btn").addEventListener("click", () => {
+function startStudy(condition) {
   let user_id = localStorage.getItem("user_id");
   if (!user_id) {
     user_id = generateId("u");
@@ -62,7 +71,6 @@ document.getElementById("start-btn").addEventListener("click", () => {
 
   const session_id = generateId("s");
   const session_start = Date.now();
-  const condition = Math.random() < 0.5 ? 1 : 0;
 
   sessionStorage.setItem("STUDY_SESSION", JSON.stringify({
     user_id,
@@ -71,7 +79,6 @@ document.getElementById("start-btn").addEventListener("click", () => {
     condition
   }));
 
-  // Log Session Start
   fetch("/api/log", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -87,11 +94,22 @@ document.getElementById("start-btn").addEventListener("click", () => {
     })
   });
 
-  if (condition === 1) {
-    window.location.href = "results-llm.html";
-  } else {
+  if (condition === 0 || condition === 1) {
     window.location.href = "results-filter.html";
+  } else {
+    window.location.href = "results-llm.html";
   }
+}
+
+document.getElementById("start-btn").addEventListener("click", () => {
+  const condition = Math.floor(Math.random() * 4);
+  startStudy(condition);
+});
+
+document.querySelectorAll(".test-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    startStudy(Number(btn.dataset.condition));
+  });
 });
 </script>
 

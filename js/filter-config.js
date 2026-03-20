@@ -19,9 +19,9 @@ const FILTER_DEFINITIONS = {
     category: "price_quality",
     type: "range",
     attribute: "price",
-    min: 50,
-    max: 150,
-    step: 5,
+    min: 100,
+    max: 400,
+    step: 10,
     unit: " USD"
   },
 
@@ -63,6 +63,20 @@ const FILTER_DEFINITIONS = {
     unit: " miles"
   },
 
+  accommodationType: {
+    label: "Accommodation type",
+    subLabel: "Type",
+    category: "type",
+    type: "multi_select",
+    attribute: "accommodationType",
+    options: [
+      { value: "hotel", label: "Hotel" },
+      { value: "apartment", label: "Apartment" },
+      { value: "guesthouse", label: "Guesthouse" },
+      { value: "bnb", label: "Bed & Breakfast" }
+    ]
+  },
+
   pool: {
     label: "Pool",
     category: "amenities",
@@ -70,11 +84,11 @@ const FILTER_DEFINITIONS = {
     attribute: "pool"
   },
 
-  sauna: {
-    label: "Sauna",
+  wellness: {
+    label: "Wellness/Spa",
     category: "amenities",
     type: "boolean",
-    attribute: "sauna"
+    attribute: "wellness"
   },
 
   fitness: {
@@ -118,37 +132,37 @@ const FILTER_DEFINITIONS = {
     type: "boolean",
     attribute: "parkingPaid"
   },
-
-  accommodationType: {
-    label: "Accommodation type",
-    subLabel: "Type",
-    category: "type",
-    type: "multi_select",
-    attribute: "accommodationType",
-    options: [
-      { value: "hotel", label: "Hotel" },
-      { value: "apartment", label: "Apartment" },
-      { value: "holiday_home", label: "Holiday home" },
-      { value: "bnb", label: "Bed & Breakfast" }
-    ]
-  }
 };
 
 // ==========================
 // Experimental Activation
 // ==========================
-const ACTIVE_FILTERS = [
+const ACTIVE_FILTERS_LOW = [
+  "price",
+  "stars",
+  "minRating",
+  "distance",
+  "accommodationType"
+];
+
+const ACTIVE_FILTERS_HIGH = [
   "price",
   "stars",
   "minRating",
   "distance",
   "accommodationType",
   "pool",
-  "sauna",
+  "wellness",
   "fitness",
   "aircon",
   "breakfast",
   "freeCancellation",
   "parkingFree",
-  "parkingPaid"
+  "parkingPaid",
 ];
+
+const ACTIVE_FILTERS = (window.STUDY.condition === 0 || window.STUDY.condition === 2)
+  ? ACTIVE_FILTERS_LOW
+  : ACTIVE_FILTERS_HIGH;
+
+// Additional Filter Options may be 24/7 reception, bar, restaurant, pet-friendly, family-friendly, safe, wifi
