@@ -15,7 +15,7 @@ const FILTER_CATEGORIES = {
 const FILTER_DEFINITIONS = {
   price: {
     label: "Maximum price (USD)",
-    subLabel: "Price per night",
+    subLabel: "Max. price per night",
     category: "price_quality",
     type: "range",
     attribute: "price",

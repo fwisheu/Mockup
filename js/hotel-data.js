@@ -53,11 +53,11 @@ const HOTELS = [
       accommodationType: "apartment"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600",
+      cover: "images/h2/h2_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800",
-        "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800",
-        "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=800"
+        "images/h2/h2_01.jpg",
+        "images/h2/h2_02.jpg",
+        "images/h2/h2_03.jpg"
       ]
     }
   },
@@ -84,11 +84,11 @@ const HOTELS = [
       accommodationType: "hotel"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",
+      cover: "images/h3/h3_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800",
-        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800",
-        "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800"
+        "images/h3/h3_01.jpg",
+        "images/h3/h3_02.jpg",
+        "images/h3/h3_03.jpg"
       ]
     }
   },
@@ -115,11 +115,11 @@ const HOTELS = [
       accommodationType: "hotel"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600",
+      cover: "images/h4/h4_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800",
-        "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800",
-        "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=800"
+        "images/h4/h4_01.jpg",
+        "images/h4/h4_02.jpg",
+        "images/h4/h4_03.jpg"
       ]
     }
   },
@@ -146,11 +146,11 @@ const HOTELS = [
       accommodationType: "hotel"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",
+      cover: "images/h5/h5_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800",
-        "https://images.unsplash.com/photo-1584132915807-fd1f5fbc078f?w=800",
-        "https://images.unsplash.com/photo-1559508551-44bff1de756b?w=800"
+        "images/h5/h5_01.jpg",
+        "images/h5/h5_02.jpg",
+        "images/h5/h5_03.jpg"
       ]
     }
   },
@@ -165,7 +165,7 @@ const HOTELS = [
       stars: 3,
       rating: 7.2,
       reviewCount: 97,
-      distance: 1.7,
+      distance: 2.9,
       breakfast: false,
       pool: false,
       wellness: false,
@@ -177,11 +177,11 @@ const HOTELS = [
       accommodationType: "guesthouse"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=600",
+      cover: "images/h6/h6_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800",
-        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
-        "https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=800"
+        "images/h6/h6_01.jpg",
+        "images/h6/h6_02.jpg",
+        "images/h6/h6_03.jpg"
       ]
     }
   },
@@ -196,7 +196,7 @@ const HOTELS = [
       stars: 4,
       rating: 8.0,
       reviewCount: 208,
-      distance: 3.1,
+      distance: 3.2,
       breakfast: true,
       pool: false,
       wellness: false,
@@ -270,11 +270,11 @@ const HOTELS = [
       accommodationType: "hotel"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600",
+      cover: "images/h9/h9_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800",
-        "https://images.unsplash.com/photo-1568084680786-a84f91d1153c?w=800",
-        "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800"
+        "images/h9/h9_01.jpg",
+        "images/h9/h9_02.jpg",
+        "images/h9/h9_03.jpg"
       ]
     }
   },
