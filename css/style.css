@@ -681,6 +681,7 @@ body {
   .hotel-card {
     flex-direction: column;
     align-items: stretch;
+    position: relative;
   }
 
   .hotel-image {
@@ -689,11 +690,11 @@ body {
   }
 
   .hotel-price {
-    align-items: left;
-    margin-top: 8px;
-    margin-left: 7px;
-    font-size: 17px;
-    padding: 1px;
+    align-self: flex-end;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 16px;
     font-weight: 600;
   }
 
