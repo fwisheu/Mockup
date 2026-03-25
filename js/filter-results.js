@@ -72,6 +72,26 @@ function logChoiceSet(hotels) {
         condition,
         hotel_order: hotels.map(h => h.id),
         hotel_count: hotels.length,
+        displayed_count: displayedCount,
+        timestamp: new Date().toISOString()
+      }
+    })
+  });
+}
+
+function logLoadMore(oldValue, newValue, totalCount) {
+  fetch("/api/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collection: "interactions",
+      data: {
+        experiment_id: window.STUDY.experiment_id,
+        session_id,
+        type: "load_more",
+        previously_displayed: oldValue,
+        newly_displayed: newValue,
+        total_available: totalCount,
         timestamp: new Date().toISOString()
       }
     })
@@ -261,6 +281,11 @@ function shuffle(arr) {
 // Hotels mischen (Reihenfolgeeffekte vermeiden)
 const hotels = shuffle([...HOTELS]);
 
+// Load More state
+let displayedCount = 10;
+const itemsPerPage = 10;
+let lastFilteredList = [];
+
 // =========================
 // Hotelcards: Rendering
 // =========================
@@ -268,7 +293,13 @@ function renderHotels(list) {
   const container = document.getElementById("results-list");
   container.innerHTML = "";
 
-  list.forEach((hotel, index) => {
+  // Speichere gefilterte Liste für Load More
+  lastFilteredList = list;
+
+  // Nur displayedCount Hotels anzeigen
+  const visibleHotels = list.slice(0, displayedCount);
+
+  visibleHotels.forEach((hotel, index) => {
     const card = document.createElement("div");
     card.className = "hotel-card";
 
@@ -313,6 +344,31 @@ function renderHotels(list) {
 
     container.appendChild(card);
   });
+
+  // Load More Button
+  const loadMoreDiv = document.createElement("div");
+  loadMoreDiv.className = "load-more-container";
+  
+  if (displayedCount < list.length) {
+    const loadMoreBtn = document.createElement("button");
+    loadMoreBtn.textContent = `Load ${itemsPerPage} more`;
+    loadMoreBtn.className = "load-more-btn";
+    loadMoreBtn.addEventListener("click", () => {
+      const oldValue = displayedCount;
+      displayedCount += itemsPerPage;
+      
+      // Log the load_more interaction
+      logLoadMore(oldValue, displayedCount, list.length);
+      
+      // Update choice set
+      logChoiceSet(list);
+      
+      // Re-render
+      renderHotels(list);
+    });
+    loadMoreDiv.appendChild(loadMoreBtn);
+  }
+  container.appendChild(loadMoreDiv);
 }
 
 // =========================
@@ -375,6 +431,7 @@ function applyFilters() {
     });
   });
 
+  displayedCount = 10;
   renderHotels(filtered);
   logChoiceSet(filtered);
 }

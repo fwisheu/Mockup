@@ -95,7 +95,7 @@ function openHotelModal(hotel, onSelect) {
     freeCancellation: "Free cancellation",
     parkingFree: "Free parking",
     parkingPaid: "Paid parking available",
-    distance: "Distance to city centre",
+    distance: "Distance to city center",
     accommodationType: "Accommodation type"
   };
 
@@ -177,8 +177,8 @@ function openHotelModal(hotel, onSelect) {
           time_to_decision: timeToDecision,
           selected_hotel_id: hotel.id,
           selected_rank: hotel.rank,
-          active_filter_count: window.STUDY.condition === 0 ? ACTIVE_FILTERS.length : null,
-          final_filter_state: window.STUDY.condition === 0 ? { ...filterState } : null
+          active_filter_count: (window.STUDY.condition === 0 || window.STUDY.condition === 1) ? ACTIVE_FILTERS.length : null,
+          final_filter_state: (window.STUDY.condition === 0 || window.STUDY.condition === 1) ? { ...filterState } : null
         }
       })
     });

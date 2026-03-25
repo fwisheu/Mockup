@@ -42,7 +42,7 @@ const HOTELS = [
       rating: 9.1,
       reviewCount: 521,
       distance: 1.3,
-      breakfast: true,
+      breakfast: false,
       pool: false,
       wellness: false,
       fitness: false,
@@ -68,7 +68,7 @@ const HOTELS = [
     description: "The Pacific Crown is a luxurious 5-star hotel with a long-standing reputation for providing exclusive service. " +
     "With its prime location in the heart of Vancouver, it offers easy access to Vancouver's top attractions and vibrant culture.",
     attributes: {
-      price: 229,
+      price: 238,
       stars: 5,
       rating: 7.8,
       reviewCount: 173,
@@ -301,11 +301,11 @@ const HOTELS = [
       accommodationType: "hotel"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1506059612708-99d6c258160e?w=600",
+      cover: "images/h10/h10_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1506059612708-99d6c258160e?w=800",
-        "https://images.unsplash.com/photo-1533044309907-0fa3413da946?w=800",
-        "https://images.unsplash.com/photo-1522798514-97ceb8c4f1c8?w=800"
+        "images/h10/h10_01.jpg",
+        "images/h10/h10_02.jpg",
+        "images/h10/h10_03.jpg"
       ]
     }
   },
@@ -316,11 +316,11 @@ const HOTELS = [
     description: "Named after Vancouver's most iconic landmark, the Lions Gate has earned a loyal following " +
     "through years of consistent, attentive hospitality. A hotel that takes pride in the details and that shows.",
     attributes: {
-      price: 235,
+      price: 224,
       stars: 4,
       rating: 8.8,
       reviewCount: 467,
-      distance: 1.0,
+      distance: 1.1,
       breakfast: true,
       pool: true,
       wellness: false,
@@ -332,11 +332,11 @@ const HOTELS = [
       accommodationType: "hotel"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1549294413-26f195200c16?w=600",
+      cover: "images/h11/h11_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1549294413-26f195200c16?w=800",
-        "https://images.unsplash.com/photo-1576354302919-96748cb8299e?w=800",
-        "https://images.unsplash.com/photo-1552858725-2758b5fb1286?w=800"
+        "images/h11/h11_01.jpg",
+        "images/h11/h11_02.jpg",
+        "images/h11/h11_03.jpg"
       ]
     }
   },
@@ -363,11 +363,11 @@ const HOTELS = [
       accommodationType: "hotel"
     },
     images: {
-      cover: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600",
+      cover: "images/h12/h12_01.jpg",
       gallery: [
-        "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800",
-        "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800",
-        "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800"
+        "images/h12/h12_01.jpg",
+        "images/h12/h12_02.jpg",
+        "images/h12/h12_03.jpg"
       ]
     }
   }
