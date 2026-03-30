@@ -6,7 +6,9 @@ const { user_id, session_id, condition, session_start } = window.STUDY;
 const chatContainer = document.getElementById("chat-container");
 const inputField = document.getElementById("chat-input");
 const sendBtn = document.getElementById("send-btn");
-const hotelContainer = document.getElementById("llm-hotels");
+const MAX_USER_MESSAGES = 15;
+
+let userMessageCount = 0;
 
 function getRatingLabel(rating) {
   if (rating >= 9.0) return "Exceptional";
@@ -38,28 +40,31 @@ const API_URL = (window.location.hostname === "localhost" || window.location.hos
 // LLM System Prompt
 // ==========================
 const SYSTEM_PROMPT_LOW = `
-You are a friendly hotel recommendation assistant in a scientific study.
+Your task is to assist the user by choosing the best hotels for their trip.
+Basic trip information:
+1. City trip to Vancouver, Canada.
+2. The user is travelling with his or her partner (double room). 
+3. The trip lasts from Juli 31 to August 2 (2 nights).
+4. The user is American (currency is USD).
 
-YOUR TASK:
-Have a natural conversation to understand the user's preferences and recommend hotels.
+IMPORTANT: You are ONLY allowed to use information provided in the basic trip information and the hotel list. 
+From the hotel list you are only allowed to access the following attributes: 
+name, description, price, stars, rating, reviewCount, distance, accommodationType.
+You will have a natural conversation with the user to understand their preferences regarding their accommodation needs.
 
-CONVERSATION FLOW:
-1. Welcome the user warmly and ask one opening question about what matters most 
-   to them for their stay (price, location, stars, or accommodation type).
-2. Ask follow-up questions — one at a time — to clarify:
-   - Budget (price range per night in USD)
-   - Preferred star category
-   - Preferred distance to city center in miles
-   - Accommodation type (hotel, apartment, etc.)
-3. Briefly acknowledge each answer naturally before the next question.
-4. Do NOT ask about amenities like pool, sauna, breakfast, parking or fitness.
-5. After collecting enough information:
+CONVERSATION STYLE:
+1. Be friendly and helpful in your responses.
+2. Briefly acknowledge each answer naturally before the next question.
+3. You should guide the user so that you can provide the first set of recommendations after no more than 4-5 questions.
+
+After collecting enough information (maximum of 4-5 questions), you recommend the first set of hotels:
     - Recommend EXACTLY 3 hotels from the provided hotel list
     - The selection should plausibly match the user's preferences
     - Perfect optimization is NOT required
 
 RECOMMENDATION FORMAT:
-Respond with a short friendly sentence followed by valid JSON only:
+Respond with a short, friendly sentence and tell the user that he can continue the process by clicking on "Book Now" 
+or that he can keep chatting to refine the suggestions. Then follow with valid JSON only:
 
 {
   "recommendations": [
@@ -68,38 +73,52 @@ Respond with a short friendly sentence followed by valid JSON only:
   ]
 }
 
-IMPORTANT:
-- Be conversational, not robotic
-- Do not ask more than 4-5 questions total
-- No explanations or text after the JSON
+If the user asks for additional hotel recommendations or wants to adjust his preferences, 
+you can ask additional questions for clarification and again recommend EXACTLY 3 new hotels using the valid JSON only:
+
+{
+  "recommendations": [
+    { "name": "..." },
+    ...
+  ]
+}
+
+IMPORTANT: If the user has sent more than 15 messages, stop the conversation by telling the user that he or she has reached the message limit.
+and recommend the 3 best matching hotels based on the information you have collected so far by using the valid JSON only:
+
+{
+  "recommendations": [
+    { "name": "..." },
+    ...
+  ]
+}. 
+Do not ask any more questions after that.
 `;
 
 const SYSTEM_PROMPT_HIGH = `
-You are a friendly hotel recommendation assistant in a scientific study.
+Your task is to assist the user by choosing the best hotels for their trip.
+Basic trip information:
+1. City trip to Vancouver, Canada.
+2. The user is travelling with his or her partner (double room). 
+3. The trip lasts from Juli 31 to August 2 (2 nights).
+4. The user is American (currency is USD).
 
-YOUR TASK:
-Have a natural conversation to understand the user's preferences in detail 
-and recommend the best matching hotels.
+IMPORTANT: You are ONLY allowed to use information provided in the basic trip information and the hotel list.
+You will have a natural conversation with the user to understand their preferences regarding their accommodation needs.
 
-CONVERSATION FLOW:
-1. Welcome the user warmly and ask one opening question about what matters most 
-   to them for their stay.
-2. Ask follow-up questions — one at a time — to clarify:
-   - Budget (price range per night in USD)
-   - Preferred star category
-   - Minimum acceptable guest rating
-   - Preferred distance to city center in miles
-   - Accommodation type (hotel, apartment, etc.)
-   - Amenities: pool, sauna, fitness facilities, air conditioning
-   - Services: breakfast, free cancellation, parking
-3. Briefly acknowledge each answer naturally before the next question.
-4. After collecting enough information:
+CONVERSATION STYLE:
+1. Be friendly and helpful in your responses.
+2. Briefly acknowledge each answer naturally before the next question.
+3. You should guide the user so that you can provide the first set of recommendations after no more than 6-8 questions.
+
+After collecting enough information (maximum of 7-8 questions), you recommend the first set of hotels:
     - Recommend EXACTLY 3 hotels from the provided hotel list
     - The selection should plausibly match the user's preferences
     - Perfect optimization is NOT required
 
 RECOMMENDATION FORMAT:
-Respond with a short friendly sentence followed by valid JSON only:
+Respond with a short, friendly sentence and tell the user that he can continue the process by clicking on "Book Now" 
+or that he can keep chatting to refine the suggestions. Then follow with valid JSON only:
 
 {
   "recommendations": [
@@ -108,10 +127,26 @@ Respond with a short friendly sentence followed by valid JSON only:
   ]
 }
 
-IMPORTANT:
-- Be conversational, not robotic
-- Do not ask more than 8-9 questions total
-- No explanations or text after the JSON
+If the user asks for additional hotel recommendations or wants to adjust his preferences, 
+you can ask additional questions for clarification and again recommend EXACTLY 3 new hotels using the valid JSON only:
+
+{
+  "recommendations": [
+    { "name": "..." },
+    ...
+  ]
+}
+
+IMPORTANT: If the user has sent more than 15 messages, stop the conversation by telling the user that he or she has reached the message limit.
+and recommend the 3 best matching hotels based on the information you have collected so far by using the valid JSON only:
+
+{
+  "recommendations": [
+    { "name": "..." },
+    ...
+  ]
+}. 
+Do not ask any more questions after that.
 `;
 
 const SYSTEM_PROMPT = window.STUDY.condition === 2
@@ -154,6 +189,16 @@ function removeTypingBubble() {
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function closeChatInputIfLimitReached() {
+  if (userMessageCount < MAX_USER_MESSAGES) return;
+
+  inputField.disabled = true;
+  sendBtn.disabled = true;
+
+  const inputWrapper = document.querySelector(".chat-input");
+  if (inputWrapper) inputWrapper.remove();
 }
 
 // ==========================
@@ -217,6 +262,7 @@ async function handleSend() {
 
   const userText = inputField.value.trim();
   inputField.value = "";
+  userMessageCount += 1;
 
   addMessage(userText, "user");
   messages.push({ role: "user", content: userText });
@@ -288,11 +334,11 @@ async function handleSend() {
   }
 
   if (parsed?.recommendations) {
+    const finalMessage = reply.replace(/\{[\s\S]*\}/, "").trim();
 
-    addMessage(
-      "Good choice! I have now selected the hotels that fit your preferences best. Please select the one you like best!",
-      "ai"
-    );
+    if (finalMessage) {
+      addMessage(finalMessage, "ai");
+    }
 
     const matchedHotels = parsed.recommendations
       .map(rec => HOTELS.find(h => h.name === rec.name))
@@ -317,19 +363,20 @@ async function handleSend() {
       })
     });
 
-    const inputWrapper = document.querySelector(".chat-input");
-    if (inputWrapper) inputWrapper.remove();
-
   } else {
     addMessage(reply, "ai");
   }
+
+  closeChatInputIfLimitReached();
 }
 
 // ==========================
 // Hotels rendern + Modal öffnen
 // ==========================
 function renderHotels(hotels) {
-  hotelContainer.innerHTML = "";
+  const recommendationSet = document.createElement("div");
+  recommendationSet.className = "chat-hotels";
+
   hotels.forEach((hotel, index) => {
     hotel.images = hotel.images || {
       cover: hotel.image || "",
@@ -354,7 +401,7 @@ function renderHotels(hotels) {
         </div>
       </div>
       <div class="hotel-price">
-        €${hotel.attributes.price} per night
+        $${hotel.attributes.price} per night
       </div>
     `;
     div.addEventListener("click", () => {
@@ -367,9 +414,10 @@ function renderHotels(hotels) {
         });
       });
     });
-    hotelContainer.appendChild(div);
+    recommendationSet.appendChild(div);
   });
-  chatContainer.appendChild(hotelContainer);
+
+  chatContainer.appendChild(recommendationSet);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
