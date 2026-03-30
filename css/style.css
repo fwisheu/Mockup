@@ -385,31 +385,40 @@ body {
 }
 
 .chat-msg.ai {
-  background: rgba(202, 199, 199, 0.1);
+  background: #f6f7f8;
+  color: #1a1a2e;
   align-self: flex-start;
   border-radius: 12px 12px 12px 4px;
+  font-size: 15px;
 }
 
 .chat-msg.user {
-  background: #e5f5da9a;
-  color: black;
+  background: #d0e3ff;
+  color: #1a1a2e;
   align-self: flex-end;
   border-radius: 12px 12px 4px 12px;
+  font-size: 15px;
 }
 
 .chat-input input {
   width: 100%;
-  padding: 12px 52px 12px 12px; /* rechts Platz für Button */
-  font-size: 16px;
+  padding: 12px 52px 12px 12px;
+  font-size: 15px;
   border-radius: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #c5d0e0;
   outline: none;
+  background: #ffffff;
+}
+
+.chat-input input:focus {
+  border-color: #204881;
 }
 
 .chat-wrapper {
   background: #ffffff;
   border-radius: 12px;
   padding: 16px;
+  border: 1px solid #dde3ed;
 }
 
 #send-btn {
@@ -417,25 +426,21 @@ body {
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-
   width: 38px;
   height: 38px;
   border-radius: 50%;
   border: none;
-
-  background: #010007c0;
+  background: #204881;
   color: white;
   font-size: 16px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
 }
 
 #send-btn:hover {
-  background: #010007;
+  background: #163660;
 }
 
 #send-btn:disabled {
@@ -712,7 +717,7 @@ body {
   .hotel-price {
     align-self: flex-end;
     position: absolute;
-    bottom: 14px;
+    bottom: 16px;
     right: 12px;
     font-size: 17px;
     font-weight: 600;

@@ -61,6 +61,7 @@ function isRemoval(oldVal, newVal) {
 }
 
 function logChoiceSet(hotels) {
+  const displayedHotels = hotels.slice(0, displayedCount);
   fetch("/api/log", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -70,9 +71,9 @@ function logChoiceSet(hotels) {
         experiment_id: window.STUDY.experiment_id,
         session_id,
         condition,
-        hotel_order: hotels.map(h => h.id),
-        hotel_count: hotels.length,
-        displayed_count: displayedCount,
+        hotel_order: displayedHotels.map(h => h.id),
+        hotel_count: displayedCount,
+        total_available: hotels.length,
         timestamp: new Date().toISOString()
       }
     })

@@ -29,7 +29,7 @@
   <p>
     Your task is to select the perfect hotel for a <strong>city trip to Vancouver</strong>.  
     Please imagine that you are traveling together with your partner and are therefore looking for a 
-    <strong>double room</strong>. The trip lasts <strong>four nights</strong>, from <strong>July&nbsp;31 to August&nbsp;4</strong>.
+    <strong>double room</strong>. The trip lasts <strong>two nights</strong>, from <strong>July&nbsp;31 to August&nbsp;2</strong>.
   </p>
 
   <p>
@@ -58,8 +58,22 @@
 </main>
 
 <script>
+const ASSIGNED_CONDITION_KEY = "assigned_condition";
+
 function generateId(prefix) {
   return prefix + "_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+}
+
+function getOrCreateAssignedCondition() {
+  const storedCondition = localStorage.getItem(ASSIGNED_CONDITION_KEY);
+
+  if (storedCondition !== null) {
+    return Number(storedCondition);
+  }
+
+  const condition = Math.floor(Math.random() * 4);
+  localStorage.setItem(ASSIGNED_CONDITION_KEY, String(condition));
+  return condition;
 }
 
 function startStudy(condition) {
@@ -102,7 +116,7 @@ function startStudy(condition) {
 }
 
 document.getElementById("start-btn").addEventListener("click", () => {
-  const condition = Math.floor(Math.random() * 4);
+  const condition = getOrCreateAssignedCondition();
   startStudy(condition);
 });
 

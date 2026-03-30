@@ -370,5 +370,377 @@ const HOTELS = [
         "images/h12/h12_03.jpg"
       ]
     }
+  },
+
+  {
+    id: "h13",
+    name: "Gastown Heritage Suites",
+    description: "Set in historic Gastown, these stylish apartments combine exposed brick with modern comfort. " +
+    "Ideal for travelers who seek character and independence while staying close to Vancouver's city center.",
+    attributes: {
+      price: 182,
+      stars: 4,
+      rating: 8.9,
+      reviewCount: 276,
+      distance: 0.7,
+      breakfast: false,
+      pool: false,
+      wellness: false,
+      fitness: false,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "apartment"
+    },
+    images: {
+      cover: "images/h13/h13_01.jpg",
+      gallery: [
+        "images/h13/h13_01.jpg",
+        "images/h13/h13_02.jpg",
+        "images/h13/h13_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h14",
+    name: "Coal Harbour Retreat",
+    description: "A peaceful waterfront property offering scenic views and easy access to Stanley Park. " +
+    "Guests enjoy a calm atmosphere while remaining within easy reach of downtown shops, dining, and major sights.",
+    attributes: {
+      price: 265,
+      stars: 5,
+      rating: 8.6,
+      reviewCount: 198,
+      distance: 0.9,
+      breakfast: true,
+      pool: true,
+      wellness: true,
+      fitness: true,
+      aircon: true,
+      freeCancellation: false,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
+    },
+    images: {
+      cover: "images/h14/h14_01.jpg",
+      gallery: [
+        "images/h14/h14_01.jpg",
+        "images/h14/h14_02.jpg",
+        "images/h14/h14_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h15",
+    name: "Urban Stay Vancouver",
+    description: "Functional and modern apartments designed for short city stays in a convenient location. " +
+    "Clean interiors and practical layouts make this a solid choice for independent travelers that want to explore Vancouver.",
+    attributes: {
+      price: 148,
+      stars: 3,
+      rating: 7.9,
+      reviewCount: 143,
+      distance: 1.6,
+      breakfast: false,
+      pool: false,
+      wellness: false,
+      fitness: false,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "apartment"
+    },
+    images: {
+      cover: "images/h15/h15_01.jpg",
+      gallery: [
+        "images/h15/h15_01.jpg",
+        "images/h15/h15_02.jpg",
+        "images/h15/h15_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h16",
+    name: "Stanley Park Lodge",
+    description: "A cozy guesthouse located right next to Stanley Park, offering a relaxed base close to nature. " +
+    "Guests appreciate the friendly hosts and the quiet setting away from the busy city centre.",
+    attributes: {
+      price: 134,
+      stars: 3,
+      rating: 8.2,
+      reviewCount: 89,
+      distance: 2.4,
+      breakfast: true,
+      pool: false,
+      wellness: false,
+      fitness: false,
+      aircon: false,
+      freeCancellation: false,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "guesthouse"
+    },
+    images: {
+      cover: "images/h16/h16_01.jpg",
+      gallery: [
+        "images/h16/h16_01.jpg",
+        "images/h16/h16_02.jpg",
+        "images/h16/h16_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h17",
+    name: "Pacific Business Hotel",
+    description: "A reliable 4-star hotel tailored to business travelers near Vancouver's financial district. " +
+    "Efficient service and comfortable rooms ensure a smooth and productive stay throughout your visit.",
+    attributes: {
+      price: 211,
+      stars: 4,
+      rating: 8.3,
+      reviewCount: 332,
+      distance: 0.8,
+      breakfast: true,
+      pool: false,
+      wellness: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
+    },
+    images: {
+      cover: "images/h17/h17_01.jpg",
+      gallery: [
+        "images/h17/h17_01.jpg",
+        "images/h17/h17_02.jpg",
+        "images/h17/h17_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h18",
+    name: "Granville Boutique B&B",
+    description: "A charming bed & breakfast with individually designed rooms and a warm atmosphere. " +
+    "Our guests particularly value the homemade breakfast and the attentive, personal service.",
+    attributes: {
+      price: 167,
+      stars: 4,
+      rating: 9.2,
+      reviewCount: 154,
+      distance: 1.5,
+      breakfast: true,
+      pool: false,
+      wellness: false,
+      fitness: false,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "bnb"
+    },
+    images: {
+      cover: "images/h18/h18_01.jpg",
+      gallery: [
+        "images/h18/h18_01.jpg",
+        "images/h18/h18_02.jpg",
+        "images/h18/h18_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h19",
+    name: "False Creek Residence",
+    description: "Modern apartments overlooking False Creek that offer more space than typical hotel rooms. " +
+    "A good option for longer stays with convenient access to downtown and the waterfront.",
+    attributes: {
+      price: 203,
+      stars: 4,
+      rating: 8.1,
+      reviewCount: 267,
+      distance: 1.8,
+      breakfast: false,
+      pool: false,
+      wellness: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: false,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "apartment"
+    },
+    images: {
+      cover: "images/h19/h19_01.jpg",
+      gallery: [
+        "images/h19/h19_01.jpg",
+        "images/h19/h19_02.jpg",
+        "images/h19/h19_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h20",
+    name: "West End Comfort Inn",
+    description: "A simple and affordable hotel located in Vancouver's popular West End. " +
+    "It provides a practical base for exploring the city on foot while keeping travel costs low.",
+    attributes: {
+      price: 121,
+      stars: 3,
+      rating: 7.4,
+      reviewCount: 201,
+      distance: 1.2,
+      breakfast: false,
+      pool: false,
+      wellness: false,
+      fitness: false,
+      aircon: false,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "hotel"
+    },
+    images: {
+      cover: "images/h20/h20_01.jpg",
+      gallery: [
+        "images/h20/h20_01.jpg",
+        "images/h20/h20_02.jpg",
+        "images/h20/h20_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h21",
+    name: "Harbour Luxury Residences",
+    description: "High-end serviced apartments offering stunning harbour views and elegant interiors. " +
+    "Premium amenities and generous space make it ideal for guests seeking a refined stay in Vancouver.",
+    attributes: {
+      price: 335,
+      stars: 5,
+      rating: 9.4,
+      reviewCount: 412,
+      distance: 0.6,
+      breakfast: true,
+      pool: true,
+      wellness: true,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "apartment"
+    },
+    images: {
+      cover: "images/h21/h21_01.jpg",
+      gallery: [
+        "images/h21/h21_01.jpg",
+        "images/h21/h21_02.jpg",
+        "images/h21/h21_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h22",
+    name: "Kitsilano Beach Guesthouse",
+    description: "A laid-back guesthouse near Kitsilano Beach with a relaxed and friendly atmosphere. " +
+    "Perfect for travelers who prefer a more local experience while staying close to the waterfront.",
+    attributes: {
+      price: 142,
+      stars: 3,
+      rating: 8.5,
+      reviewCount: 118,
+      distance: 3.5,
+      breakfast: true,
+      pool: false,
+      wellness: false,
+      fitness: false,
+      aircon: false,
+      freeCancellation: false,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "guesthouse"
+    },
+    images: {
+      cover: "images/h22/h22_01.jpg",
+      gallery: [
+        "images/h22/h22_01.jpg",
+        "images/h22/h22_02.jpg",
+        "images/h22/h22_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h23",
+    name: "Downtown Executive Suites",
+    description: "Designed for business travellers, our suites offer spacious accommodations right in the heart of Vancouver. " +
+    "Moreover, our 24/7 reception is dedicated to make your stay as convenient as possible.",
+    attributes: {
+      price: 228,
+      stars: 4,
+      rating: 8.8,
+      reviewCount: 305,
+      distance: 0.4,
+      breakfast: false,
+      pool: false,
+      wellness: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: false,
+      parkingPaid: true,
+      accommodationType: "apartment"
+    },
+    images: {
+      cover: "images/h23/h23_01.jpg",
+      gallery: [
+        "images/h23/h23_01.jpg",
+        "images/h23/h23_02.jpg",
+        "images/h23/h23_03.jpg"
+      ]
+    }
+  },
+
+  {
+    id: "h24",
+    name: "Vancouver Garden Hotel",
+    description: "A quiet hotel surrounded by greenery, offering a relaxed retreat outside the busy core. " +
+    "Guests enjoy a calmer setting with good connections to downtown attractions.",
+    attributes: {
+      price: 176,
+      stars: 4,
+      rating: 7.7,
+      reviewCount: 147,
+      distance: 4.2,
+      breakfast: true,
+      pool: true,
+      wellness: false,
+      fitness: true,
+      aircon: true,
+      freeCancellation: true,
+      parkingFree: true,
+      parkingPaid: false,
+      accommodationType: "hotel"
+    },
+    images: {
+      cover: "images/h24/h24_01.jpg",
+      gallery: [
+        "images/h24/h24_01.jpg",
+        "images/h24/h24_02.jpg",
+        "images/h24/h24_03.jpg"
+      ]
+    }
   }
 ];
