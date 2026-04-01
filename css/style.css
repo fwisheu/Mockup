@@ -352,6 +352,14 @@ body {
   max-width: 1400px;
 }
 
+.chat-heading {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+}
+
 #chat-container {
   display: flex;
   flex-direction: column;
@@ -390,6 +398,7 @@ body {
   align-self: flex-start;
   border-radius: 12px 12px 12px 4px;
   font-size: 15px;
+  white-space: pre-wrap;
 }
 
 .chat-msg.user {
@@ -451,7 +460,8 @@ body {
 .chat-hotels {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
+  margin-top: -12px;
 }
 
 .typing {
@@ -512,7 +522,7 @@ body {
   background-color: #fff;
   max-width: 860px;
   width: 95%;
-  max-height: 95vh;
+  max-height: 96vh;
   overflow-y: auto;
   border-radius: 12px;
   padding: 18px;
@@ -684,6 +694,61 @@ body {
 }
 
 /* =========================
+   Help Icon
+========================= */
+.help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #1a3950;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: help;
+  transition: background-color 0.2s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.help-icon:hover {
+  background-color: #005999;
+}
+
+.help-icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 10px;
+  background-color: #333;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: normal;
+  width: 410px;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.5;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  visibility: hidden;
+}
+
+.help-icon:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* =========================
    mobile Ansicht
 ========================= */
 @media (max-width: 900px) {
@@ -692,7 +757,7 @@ body {
   }
 
   .results-title {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .search-meta {
@@ -703,6 +768,15 @@ body {
     position: static;
   }
 
+  #filters h3::before {
+    width: 17px;
+    height: 17px;
+  }
+
+  #filters h3 {
+    font-size: 20px;
+  }
+    
   .hotel-card {
     flex-direction: column;
     align-items: stretch;
@@ -710,17 +784,18 @@ body {
   }
 
   .hotel-image {
-    width: 100%;
+    max-width: 100%;
     height: auto;
+    margin: 4px 6px 0px 6px;
   }
-
   .hotel-price {
     align-self: flex-end;
     position: absolute;
     bottom: 16px;
-    right: 12px;
+    right: 18px;
     font-size: 17px;
     font-weight: 600;
+    margin: 0;
   }
 
   .hotel-title {
@@ -729,8 +804,24 @@ body {
 
   .hotel-rating,
   .hotel-ai {
-    font-size: 15px;
+    font-size: 14px;
     padding-top: 4px;
+  }
+  .rating-badge {
+    background-color: #003580;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px 6px 6px 0px;
+    margin-right: -2px;
+    white-space: nowrap;
+  }
+
+  .rating-count {
+    color: #777;
+    font-size: 12px;
+    margin-left: -2px;
   }
 
   .hotel-header,
@@ -742,11 +833,26 @@ body {
     padding: 10px;
   }
 
-  .chat-input input {
-  width: 80%;
-  max-width: 840px;
-  padding: 12px;
-  font-size: 16px;
-  margin-bottom: 12px;
+  .chat-heading {
+    font-size: 18px;
   }
+
+  .chat-input input {
+    width: 100%;
+    max-width: 840px;
+  }
+
+  .help-icon::after {
+    width: 220px;
+    font-size: 12px;
+    padding: 8px 10px;
+    left: 100%;
+    margin-left: 8px;
+  }
+  .modal-attr-row {
+    justify-content: space-between;
+    font-size: 12.5px;
+    padding: 4px 6px;
+  }
+
 }
