@@ -18,7 +18,7 @@ export async function handler(event, context) {
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
       model: "gpt-4.1-mini",
-      messages: req.body.messages,
+      messages: messages,
       max_completion_tokens: 700
     });
 
