@@ -346,6 +346,50 @@ body {
 }
 
 /* =========================
+   Empty Results Message
+========================= */
+.empty-results-message {
+  padding: 40px 40px;
+  text-align: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #f9fafb 100%);
+  border: 1px solid #e8ecf1;
+  border-radius: 12px;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.empty-state-icon {
+  font-size: 36px;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+
+.empty-state-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a2e;
+  letter-spacing: -0.3px;
+}
+
+.empty-state-description {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #555;
+  font-weight: 500;
+}
+
+.empty-state-suggestion {
+  margin: -20px;
+  font-size: 16px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* =========================
    Chat Interface
 ========================= */
 .page-container {

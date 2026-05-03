@@ -297,6 +297,20 @@ function renderHotels(list) {
   // Speichere gefilterte Liste für Load More
   lastFilteredList = list;
 
+  // Wenn keine Hotels verfügbar sind, zeige Hinweistext
+  if (list.length === 0) {
+    const emptyMessage = document.createElement("div");
+    emptyMessage.className = "empty-results-message";
+    emptyMessage.innerHTML = `
+      <div class="empty-state-icon">🔍</div>
+      <h2 class="empty-state-title">No Results Found</h2>
+      <p class="empty-state-description">We were not able to find accommodations that match your current filters.</p>
+      <p class="empty-state-suggestion">Try adjusting your search criteria to find more options.</p>
+    `;
+    container.appendChild(emptyMessage);
+    return;
+  }
+
   // Nur displayedCount Hotels anzeigen
   const visibleHotels = list.slice(0, displayedCount);
 

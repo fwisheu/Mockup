@@ -40,12 +40,12 @@ const API_URL = (window.location.hostname === "localhost" || window.location.hos
 // LLM System Prompt
 // ==========================
 const SYSTEM_PROMPT_LOW = `
-Your task is to assist the user by choosing the best hotels for their trip.
+Your task is to assist the user by choosing the best hotel for their trip.
 Basic trip information:
 1. City trip to Vancouver, Canada.
 2. The user is travelling with his or her partner (double room). 
 3. The trip lasts from Juli 31 to August 2 (2 nights).
-4. The user is American (currency is USD).
+4. The user is American (currency is USD, distance in miles).
 
 IMPORTANT: 
 - You are ONLY allowed to use information provided in the basic trip information and the hotel list that I will provide you with.
@@ -59,7 +59,7 @@ CONVERSATION FLOW:
 4. Actively guide the user through the decision process.
 5. Avoid asking multi-questions about different individual attributes at once. Instead, try to get an overall understanding of the user's preferences and needs.
 6. When suitable, make suggestions about useful features or give tips based on the information the preferences the user has voiced.
-7. You may structure the conversation by grouping preferences to adress trade-offs (e.g., price, location, comfort).
+7. You may structure the conversation by grouping preferences to address trade-offs (e.g., price, location, comfort).
 8. Help the user understand trade-offs between options (e.g., price, location, comfort).
 9. After each user response, briefly respond to the user's preference. Do NOT keep summarizing the user's preferences except if you think it is really helpful to guide the user.
 10. Guide the conversation so that you can provide the first set of recommendations after no more than 4-6 messages.
@@ -97,12 +97,12 @@ D) If the user asks if you can book the hotel for him or her:
 `;
 
 const SYSTEM_PROMPT_HIGH = `
-Your task is to assist the user by choosing the best hotels for their trip.
+Your task is to assist the user by choosing the best hotel for their trip.
 Basic trip information:
 1. City trip to Vancouver, Canada.
 2. The user is travelling with his or her partner (double room). 
 3. The trip lasts from Juli 31 to August 2 (2 nights).
-4. The user is American (currency is USD).
+4. The user is American (currency is USD, distance in miles).
 
 IMPORTANT: 
 - You are ONLY allowed to use information provided in the basic trip information and the hotel list that I will provide you with.
@@ -116,7 +116,7 @@ CONVERSATION FLOW:
 4. Actively guide the user through the decision process.
 5. Avoid asking multi-questions about different individual attributes at once. Instead, try to get an overall understanding of the user's preferences and needs.
 6. When suitable, make suggestions about useful features or give tips based on the information the preferences the user has voiced.
-7. You may structure the conversation by grouping preferences to adress trade-offs (e.g., price, location, comfort).
+7. You may structure the conversation by grouping preferences to address trade-offs (e.g., price, location, comfort).
 8. Help the user understand trade-offs between options (e.g., price, location, comfort).
 9. After each user response, briefly respond to the user's preference. Do NOT keep summarizing the user's preferences except if you think it is really helpful to guide the user.
 10. Guide the conversation so that you can provide the first set of recommendations after no more than 6-8 messages.

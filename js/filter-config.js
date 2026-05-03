@@ -57,7 +57,7 @@ const FILTER_DEFINITIONS = {
     category: "location",
     type: "range",
     attribute: "distance",
-    min: 0,
+    min: 0.5,
     max: 5,
     step: 0.5,
     unit: " miles"
