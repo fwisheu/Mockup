@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Scenario Description</title>
+</head>
+<body>
+<main style="text-align: justify; padding: 60px 20px; max-width: 765px; margin: auto; line-height: 1.6;">
+  <h1 style="margin-bottom: 16px; font-size: 24px;">Please imagine the following scenario:</h1>
+
+  <p>
+  
+    You are currently planning a <strong>weekend city trip to Vancouver</strong> together <strong>with your partner</strong>.
+    You want to <strong></>choose an accommodation</strong> that best <strong>matches your personal preferences</strong>. 
+    When making your choice, consider factors such as price, location, amenities, ratings, and overall fit for your trip.<br>
+  </p>
+
+  <p>
+    Some details have already been set: The trip lasts <strong>two nights</strong>, from <strong>July&nbsp;31 to August&nbsp;2</strong>. 
+    You are looking for a <strong>double room</strong>. These details have already been pre-filled on the following website.
+  </p>
+
+  <hr style="margin: 24px 0;">
+
+  <p style="margin-top: 24px; color: #555;">
+    By clicking on "Start", you will be directed to the accommodation selection tool. 
+    Please <strong>take your time</strong> and <strong>choose the accommodation</strong> that best matches <strong>your personal preferences</strong>.
+  </p>
+
+  <div style="margin-top: 24px;">
+    <button id="start-btn" style="font-size: 18px; padding: 12px 28px; cursor: pointer; font-weight: bold;">
+      Start
+    </button>
+  </div>
+
+  <hr style="margin: 32px 0; border-style: dashed;">
+
+  <div style="font-size: 13px; color: #999; margin-bottom: 8px;">Test buttons (will be removed before launch):</div>
+  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <button class="test-btn" data-condition="0" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C0: Filter Low</button>
+    <button class="test-btn" data-condition="1" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C1: Filter High</button>
+    <button class="test-btn" data-condition="2" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C2: Chat Low</button>
+    <button class="test-btn" data-condition="3" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C3: Chat High</button>
+  </div>
+</main>
+
+<script>
+const ASSIGNED_CONDITION_KEY = "assigned_condition";
+
+function generateId(prefix) {
+  return prefix + "_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+}
+
+function getOrCreateAssignedCondition() {
+  const storedCondition = localStorage.getItem(ASSIGNED_CONDITION_KEY);
+  if (storedCondition !== null) return Number(storedCondition);
+
+  const condition = Math.floor(Math.random() * 4);
+  localStorage.setItem(ASSIGNED_CONDITION_KEY, String(condition));
+  return condition;
+}
+
+function startStudy(condition) {
+  const consent = JSON.parse(sessionStorage.getItem("STUDY_CONSENT") || "null");
+  if (!consent?.consented) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  let user_id = localStorage.getItem("user_id");
+  if (!user_id) {
+    user_id = generateId("u");
+    localStorage.setItem("user_id", user_id);
+  }
+
+  const session_id = generateId("s");
+  // The measured study time begins here, after consent and after the task instructions.
+  const session_start = Date.now();
+
+  sessionStorage.setItem("STUDY_SESSION", JSON.stringify({
+    user_id,
+    session_id,
+    session_start,
+    consent_at: consent.consent_at,
+    condition
+  }));
+
+  fetch("/api/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collection: "sessions",
+      data: {
+        experiment_id: "Test_01",
+        session_id,
+        user_id,
+        condition,
+        consent_at: consent.consent_at,
+        session_start: new Date(session_start).toISOString()
+      }
+    })
+  });
+
+  window.location.href = (condition === 0 || condition === 1)
+    ? "results-filter.html"
+    : "results-llm.html";
+}
+
+document.getElementById("start-btn").addEventListener("click", () => {
+  startStudy(getOrCreateAssignedCondition());
+});
+
+document.querySelectorAll(".test-btn").forEach(btn => {
+  btn.addEventListener("click", () => startStudy(Number(btn.dataset.condition)));
+});
+</script>
+</body>
+</html>

@@ -47,6 +47,24 @@ function getRatingLabel(rating) {
       </div>
 
     </div>
+
+    <div id="booking-confirmation" class="booking-confirmation" role="dialog" aria-modal="true" aria-labelledby="booking-confirmation-title">
+      <div class="booking-confirmation-content">
+        <h2 id="booking-confirmation-title">Confirm your Choice</h2>
+        <p>
+          Once you have choosen the accommodation that best matches your preferences for your city trip, please click 'Confirm' to finalize your choice.
+          Afterwards, you will be redirected to the survey.
+        </p>
+        <p>
+          Please note that after confirming your choice, you will no longer be able to return to the accommodation selection.
+        </p>
+        <hr class="modal-divider">
+        <div class="modal-actions">
+          <button id="cancel-confirmation-btn">Back</button>
+          <button id="confirm-booking-btn">Confirm</button>
+        </div>
+      </div>
+    </div>
   `;
 
   document.body.appendChild(modal);
@@ -66,6 +84,9 @@ function openHotelModal(hotel, onSelect) {
   const selectBtn = document.getElementById("select-hotel-btn");
   const closeBtn = document.getElementById("close-hotel-btn");
   const overlay = modal.querySelector(".modal-overlay");
+  const confirmation = document.getElementById("booking-confirmation");
+  const cancelConfirmationBtn = document.getElementById("cancel-confirmation-btn");
+  const confirmBookingBtn = document.getElementById("confirm-booking-btn");
 
   // Inhalte setzen
   document.getElementById("modal-hotel-name").innerHTML = `
@@ -162,6 +183,14 @@ function openHotelModal(hotel, onSelect) {
 
   // Button-Handler
   selectBtn.onclick = () => {
+    confirmation.classList.add("open");
+  };
+
+  cancelConfirmationBtn.onclick = () => {
+    confirmation.classList.remove("open");
+  };
+
+  confirmBookingBtn.onclick = () => {
     const sessionEnd = new Date().toISOString();
     const timeToDecision = Date.now() - window.STUDY.session_start;
 
@@ -201,5 +230,7 @@ function openHotelModal(hotel, onSelect) {
 // ==========================
 function closeHotelModal() {
   const modal = document.getElementById("hotel-modal");
+  const confirmation = document.getElementById("booking-confirmation");
+  confirmation.classList.remove("open");
   modal.classList.remove("open");
 }

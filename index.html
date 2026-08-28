@@ -1,142 +1,60 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
-  <title>Landing Page</title>
+  <title>Study Information</title>
 </head>
 <body>
 <main style="text-align: justify; padding: 60px 20px; max-width: 870px; margin: auto; line-height: 1.6;">
   <h1 style="margin-bottom: 16px;">Dear Participant,</h1>
 
   <p>
-    In this experiment, you will explore different hotel options and make choices based on your 
-    <strong>own personal preferences</strong>.  
-    There are no right or wrong answers. We are interested in your <strong> individual decision-making process</strong>.
+    In this experiment, you will explore different accommodation options and make choices based on your
+    <strong>own personal preferences</strong>.
+    There are no right or wrong answers. We are interested in your <strong>individual decision-making process</strong>.
   </p>
 
   <p>
-    During the experiment, your interactions with the website will be recorded.  
+    During the experiment, your interactions with the website will be recorded.
     All data will be <strong>fully anonymized</strong> and <strong>analyzed for research purposes only</strong>.
-    You may withdraw from the study at any point in time.  
+    You may withdraw from the study at any point in time. For study-related questions, please message us via the Prolific contact system.
   </p>
 
   <p>
-    The entire study takes approximately <strong>10 minutes</strong>. 
-    You will receive <strong>2 USD</strong> for your <strong> diligent participation</strong>.
-    After completion, you will be redirected to Prolific in order to claim your payment. 
+    The entire study takes approximately <strong>7 minutes</strong>.
+    You will receive <strong>2 USD</strong> for your <strong>diligent participation</strong>.
+    After completion, you will be redirected to Prolific in order to claim your payment.
     Only participants who have accessed this study through Prolific and have completed the task as well as the questionnaire will be compensated.
   </p>
 
   <p>
-    <strong>We reserve the right not to compensate participants who do not respond thoughtfully or in good faith or fail to read instructions carefully</strong>.
+    <strong>We reserve the right not to compensate participants who do not participate via desktop computers, do not respond thoughtfully or fail to read instructions carefully.</strong>
   </p>
 
   <hr style="margin: 32px 0;">
 
-  <h2 style="font-size: 1.2rem; margin-bottom: 8px;">Your Task</h2>
-
-  <p>
-    Your task is to select the perfect hotel for a <strong>city trip to Vancouver</strong>.  
-    Please imagine that you are traveling together with your partner and are therefore looking for a 
-    <strong>double room</strong>. The trip lasts <strong>two nights</strong>, from <strong>July&nbsp;31 to August&nbsp;2</strong>.
-  </p>
-
-  <p>
-    Note: These details have already been pre-filled on the following website.
-  </p>
-
-  <p style="margin-top: 24px; color: #555;">
-    Please take your time and choose the hotel that best matches your personal preferences.
+  <p style="margin-top: 24px;">
+    By clicking on <strong>'I consent'</strong>, you confirm that you have read and understood the information above and agree to participate in this experiment.
   </p>
 
   <div style="margin-top: 24px;">
-    <button id="start-btn" style="font-size: 18px; padding: 12px 28px; cursor: pointer;">
-      Start
+    <button id="consent-btn" style="font-size: 18px; padding: 12px 28px; cursor: pointer; font-weight: bold;">
+      I consent
     </button>
-  </div>
-
-  <hr style="margin: 32px 0; border-style: dashed;">
-
-  <div style="font-size: 13px; color: #999; margin-bottom: 8px;">Test buttons (will be removed before launch):</div>
-  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-    <button class="test-btn" data-condition="0" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C0: Filter Low</button>
-    <button class="test-btn" data-condition="1" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C1: Filter High</button>
-    <button class="test-btn" data-condition="2" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C2: Chat Low</button>
-    <button class="test-btn" data-condition="3" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C3: Chat High</button>
   </div>
 </main>
 
 <script>
-const ASSIGNED_CONDITION_KEY = "assigned_condition";
-
-function generateId(prefix) {
-  return prefix + "_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-}
-
-function getOrCreateAssignedCondition() {
-  const storedCondition = localStorage.getItem(ASSIGNED_CONDITION_KEY);
-
-  if (storedCondition !== null) {
-    return Number(storedCondition);
-  }
-
-  const condition = Math.floor(Math.random() * 4);
-  localStorage.setItem(ASSIGNED_CONDITION_KEY, String(condition));
-  return condition;
-}
-
-function startStudy(condition) {
-  let user_id = localStorage.getItem("user_id");
-  if (!user_id) {
-    user_id = generateId("u");
-    localStorage.setItem("user_id", user_id);
-  }
-
-  const session_id = generateId("s");
-  const session_start = Date.now();
-
-  sessionStorage.setItem("STUDY_SESSION", JSON.stringify({
-    user_id,
-    session_id,
-    session_start,
-    condition
+document.getElementById("consent-btn").addEventListener("click", () => {
+  sessionStorage.setItem("STUDY_CONSENT", JSON.stringify({
+    consented: true,
+    consent_at: new Date().toISOString()
   }));
 
-  fetch("/api/log", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      collection: "sessions",
-      data: {
-        experiment_id: "Test_01",
-        session_id,
-        user_id,
-        condition,
-        session_start: new Date(session_start).toISOString()
-      }
-    })
-  });
-
-  if (condition === 0 || condition === 1) {
-    window.location.href = "results-filter.html";
-  } else {
-    window.location.href = "results-llm.html";
-  }
-}
-
-document.getElementById("start-btn").addEventListener("click", () => {
-  const condition = getOrCreateAssignedCondition();
-  startStudy(condition);
-});
-
-document.querySelectorAll(".test-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    startStudy(Number(btn.dataset.condition));
-  });
+  window.location.href = "scenario.html";
 });
 </script>
-
 </body>
 </html>
