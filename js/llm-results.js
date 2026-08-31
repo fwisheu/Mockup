@@ -1,7 +1,7 @@
 // ==========================
 // Kontext
 // ==========================
-const { user_id, session_id, condition, session_start } = window.STUDY;
+const { session_id, condition, session_start } = window.STUDY;
 
 const chatContainer = document.getElementById("chat-container");
 const inputField = document.getElementById("chat-input");
@@ -297,20 +297,11 @@ async function handleSend() {
   messages.push({ role: "user", content: messageWithCounter });
 
   // Log User-Message
-  fetch("/api/log", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      collection: "interactions",
-      data: {
-        experiment_id: window.STUDY.experiment_id,
-        session_id,
+  logStudy("interactions", {
         type: "chat_message",
         role: "user",
         message_content: userText,
         timestamp: new Date().toISOString()
-      }
-    })
   });
 
   inputField.disabled = true;
@@ -329,20 +320,11 @@ async function handleSend() {
   messages.push({ role: "assistant", content: reply });
 
   // Log AI-Message
-  fetch("/api/log", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      collection: "interactions",
-      data: {
-        experiment_id: window.STUDY.experiment_id,
-        session_id,
+  logStudy("interactions", {
         type: "chat_message",
         role: "assistant",
         message_content: reply,
         timestamp: new Date().toISOString()
-      }
-    })
   });
 
   inputField.disabled = false;
@@ -376,20 +358,10 @@ async function handleSend() {
     renderHotels(matchedHotels);
 
     // Log Choice Set
-    fetch("/api/log", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        collection: "choice_sets",
-        data: {
-          experiment_id: window.STUDY.experiment_id,
-          session_id,
-          condition,
+    logStudy("choice_sets", {
           hotel_order: matchedHotels.map(h => h.id),
           hotel_count: matchedHotels.length,
           timestamp: new Date().toISOString()
-        }
-      })
     });
 
   } else {

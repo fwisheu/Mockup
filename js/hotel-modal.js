@@ -194,22 +194,17 @@ function openHotelModal(hotel, onSelect) {
     const sessionEnd = new Date().toISOString();
     const timeToDecision = Date.now() - window.STUDY.session_start;
 
-    fetch("/api/log", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        collection: "sessions",
-        operation: "update",
-        filter: { session_id: window.STUDY.session_id },
-        data: {
+    logStudy("sessions", {
           session_end: sessionEnd,
           time_to_decision: timeToDecision,
           selected_hotel_id: hotel.id,
           selected_rank: hotel.rank,
           active_filter_count: (window.STUDY.condition === 0 || window.STUDY.condition === 1) ? ACTIVE_FILTERS.length : null,
           final_filter_state: (window.STUDY.condition === 0 || window.STUDY.condition === 1) ? { ...filterState } : null
-        }
-      })
+    }, "update", {
+      prolific_pid: window.STUDY.prolific_pid,
+      study_id: window.STUDY.study_id,
+      session_id: window.STUDY.session_id
     });
 
     closeHotelModal();

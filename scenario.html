@@ -46,41 +46,26 @@
   </div>
 </main>
 
+<script src="js/participant.js"></script>
 <script>
-const ASSIGNED_CONDITION_KEY = "assigned_condition";
-
-function generateId(prefix) {
-  return prefix + "_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-}
-
-function getOrCreateAssignedCondition() {
-  const storedCondition = localStorage.getItem(ASSIGNED_CONDITION_KEY);
-  if (storedCondition !== null) return Number(storedCondition);
-
-  const condition = Math.floor(Math.random() * 4);
-  localStorage.setItem(ASSIGNED_CONDITION_KEY, String(condition));
-  return condition;
-}
-
-function startStudy(condition) {
+async function startStudy(testCondition = null) {
   const consent = JSON.parse(sessionStorage.getItem("STUDY_CONSENT") || "null");
   if (!consent?.consented) {
     window.location.href = "index.html";
     return;
   }
 
-  let user_id = localStorage.getItem("user_id");
-  if (!user_id) {
-    user_id = generateId("u");
-    localStorage.setItem("user_id", user_id);
-  }
-
-  const session_id = generateId("s");
+  const participant = window.STUDY_PARTICIPANT;
+  const condition = participant.is_test && Number.isInteger(testCondition)
+    ? testCondition
+    : await getAssignedCondition(participant);
+  const session_id = participant.session_id || makeTestId();
   // The measured study time begins here, after consent and after the task instructions.
   const session_start = Date.now();
 
   sessionStorage.setItem("STUDY_SESSION", JSON.stringify({
-    user_id,
+    prolific_pid: participant.prolific_pid,
+    study_id: participant.study_id,
     session_id,
     session_start,
     consent_at: consent.consent_at,
@@ -93,9 +78,9 @@ function startStudy(condition) {
     body: JSON.stringify({
       collection: "sessions",
       data: {
-        experiment_id: "Test_01",
+        prolific_pid: participant.prolific_pid,
+        study_id: participant.study_id,
         session_id,
-        user_id,
         condition,
         consent_at: consent.consent_at,
         session_start: new Date(session_start).toISOString()
@@ -109,7 +94,7 @@ function startStudy(condition) {
 }
 
 document.getElementById("start-btn").addEventListener("click", () => {
-  startStudy(getOrCreateAssignedCondition());
+  startStudy();
 });
 
 document.querySelectorAll(".test-btn").forEach(btn => {

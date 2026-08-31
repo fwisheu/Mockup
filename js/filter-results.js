@@ -1,4 +1,4 @@
-const { user_id, session_id, condition, session_start } = window.STUDY;
+const { session_id, condition, session_start } = window.STUDY;
 
 // =========================
 // Globaler Filter-State
@@ -33,14 +33,7 @@ function getRatingLabel(rating) {
 }
 
 function logFilterChange(filterName, newValue, oldValue) {
-  fetch("/api/log", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      collection: "interactions",
-      data: {
-        experiment_id: window.STUDY.experiment_id,
-        session_id,
+  logStudy("interactions", {
         type: "filter_change",
         filter_name: filterName,
         old_value: oldValue,
@@ -48,8 +41,6 @@ function logFilterChange(filterName, newValue, oldValue) {
         action: isRemoval(oldValue, newValue) ? "remove" : "set",
         full_state: { ...filterState },
         timestamp: new Date().toISOString()
-      }
-    })
   });
 }
 
@@ -62,40 +53,21 @@ function isRemoval(oldVal, newVal) {
 
 function logChoiceSet(hotels) {
   const displayedHotels = hotels.slice(0, displayedCount);
-  fetch("/api/log", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      collection: "choice_sets",
-      data: {
-        experiment_id: window.STUDY.experiment_id,
-        session_id,
-        condition,
+  logStudy("choice_sets", {
         hotel_order: displayedHotels.map(h => h.id),
         hotel_count: displayedCount,
         total_available: hotels.length,
         timestamp: new Date().toISOString()
-      }
-    })
   });
 }
 
 function logLoadMore(oldValue, newValue, totalCount) {
-  fetch("/api/log", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      collection: "interactions",
-      data: {
-        experiment_id: window.STUDY.experiment_id,
-        session_id,
+  logStudy("interactions", {
         type: "load_more",
         previously_displayed: oldValue,
         newly_displayed: newValue,
         total_available: totalCount,
         timestamp: new Date().toISOString()
-      }
-    })
   });
 }
 

@@ -1,25 +1,43 @@
-const STUDY = JSON.parse(sessionStorage.getItem("STUDY_SESSION"));
+const STUDY = JSON.parse(sessionStorage.getItem("STUDY_SESSION") || "null");
 
 if (!STUDY) {
   console.error("No study session found");
+  window.location.replace("index.html");
 }
 
 window.STUDY = STUDY;
-window.STUDY.experiment_id = "Test_01";
+
+function studyMetadata() {
+  return {
+    prolific_pid: STUDY.prolific_pid,
+    study_id: STUDY.study_id,
+    session_id: STUDY.session_id,
+    condition: STUDY.condition
+  };
+}
+
+function logStudy(collection, data, operation, filter) {
+  return fetch("/api/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collection,
+      operation,
+      filter,
+      data: { ...studyMetadata(), ...data }
+    })
+  }).catch(error => console.warn("Study logging failed:", error));
+}
 
 function redirectToQualtrics({ hotel, rank }) {
   const base =
     "https://lmubwl.eu.qualtrics.com/jfe/form/SV_di0S93IFjvdDiCy";
 
-  const time = Date.now() - STUDY.session_start;
-
   const params = new URLSearchParams({
-    user_id: STUDY.user_id,
+    prolific_pid: STUDY.prolific_pid,
+    study_id: STUDY.study_id,
     session_id: STUDY.session_id,
-    choice: hotel.id,
-    rank: rank,
-    time: time,
-    ai: STUDY.condition,
+    condition: STUDY.condition,
   });
 
   window.location.href = `${base}?${params.toString()}`;
