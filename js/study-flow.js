@@ -34,10 +34,10 @@ function redirectToQualtrics({ hotel, rank }) {
     "https://lmubwl.eu.qualtrics.com/jfe/form/SV_di0S93IFjvdDiCy";
 
   const params = new URLSearchParams({
-    prolific_pid: STUDY.prolific_pid,
-    study_id: STUDY.study_id,
-    session_id: STUDY.session_id,
-    condition: STUDY.condition,
+    PROLIFIC_PID: STUDY.prolific_pid,
+    STUDY_ID: STUDY.study_id,
+    SESSION_ID: STUDY.session_id,
+    CONDITION: STUDY.condition,
   });
 
   window.location.href = `${base}?${params.toString()}`;
