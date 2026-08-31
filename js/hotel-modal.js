@@ -52,7 +52,7 @@ function getRatingLabel(rating) {
       <div class="booking-confirmation-content">
         <h2 id="booking-confirmation-title">Confirm your Choice</h2>
         <p>
-          Once you have choosen the accommodation that best matches your preferences for your city trip, please click 'Confirm' to finalize your choice.
+          Once you have choosen your preferred accommodation for your city trip, please click 'Confirm' to finalize your choice.
           Afterwards, you will be redirected to the survey.
         </p>
         <p>
