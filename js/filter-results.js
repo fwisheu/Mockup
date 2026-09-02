@@ -1,12 +1,12 @@
 const { session_id, condition, session_start } = window.STUDY;
 
 // =========================
-// Globaler Filter-State
+// Global filter state
 // =========================
 const filterState = {};
 
 // ==========================
-// Default Filter-State definieren
+// Define default filter state
 // ==========================
 Object.entries(FILTER_DEFINITIONS).forEach(([key, def]) => {
   switch (def.type) {
@@ -14,7 +14,7 @@ Object.entries(FILTER_DEFINITIONS).forEach(([key, def]) => {
       filterState[key] = false;
       break;
     case "range":
-      filterState[key] = def.max ?? 100;  // Default: Max-Wert oder 100
+      filterState[key] = def.max ?? 100;  // Default: maximum value or 100
       break;
     case "select":
       filterState[key] = null;
@@ -72,15 +72,15 @@ function logLoadMore(oldValue, newValue, totalCount) {
 }
 
 // ==========================
-// Filter UI rendern (nur HTML)
+// Render filter UI (HTML only)
 // ==========================
 function renderFilters() {
   const aside = document.getElementById("filters");
 
-  // Alte Filter (außer Überschrift) entfernen
+  // Remove old filters (except the heading)
   aside.querySelectorAll(".filter-group").forEach(el => el.remove());
 
-  // Aktive Filter nach Kategorien gruppieren
+  // Group active filters by category
   const grouped = {};
 
   ACTIVE_FILTERS.forEach(key => {
@@ -93,7 +93,7 @@ function renderFilters() {
     grouped[def.category].push({ key, def });
   });
 
-  // Kategorien rendern
+  // Render categories
   Object.entries(grouped).forEach(([category, filters]) => {
     if (!filters.length) return;
 
@@ -143,9 +143,9 @@ function renderSingleFilter(key, def) {
     });
   }
 
-  // RANGE (Preis, Distanz)
+  // RANGE (price, distance)
   else if (def.type === "range") {
-    filterState[key] = def.max; // Initialwert
+    filterState[key] = def.max; // Initial value
     wrapper.innerHTML = `
       ${def.subLabel ? "" : `<label>${def.label}</label>`}
       <input type="range"
@@ -189,7 +189,7 @@ function renderSingleFilter(key, def) {
     });
   }
 
-  // MULTI SELECT (Checkbox-Gruppe)
+  // MULTI SELECT (checkbox group)
   else if (def.type === "multi_select") {
     wrapper.innerHTML = `
       ${def.subLabel ? "" : `<label>${def.label}</label>`}
@@ -213,7 +213,7 @@ function renderSingleFilter(key, def) {
     });
   }
 
-  // STARS (Sonderfall)
+  // STARS (special case)
   else if (def.type === "stars") {
     wrapper.innerHTML = `
       ${def.options.map(o => `
@@ -251,7 +251,7 @@ function shuffle(arr) {
   return arr;
 }
 
-// Hotels mischen (Reihenfolgeeffekte vermeiden)
+// Shuffle hotels (avoid order effects)
 const hotels = shuffle([...HOTELS]);
 
 // Load More state
@@ -266,10 +266,10 @@ function renderHotels(list) {
   const container = document.getElementById("results-list");
   container.innerHTML = "";
 
-  // Speichere gefilterte Liste für Load More
+  // Store filtered list for load more
   lastFilteredList = list;
 
-  // Wenn keine Hotels verfügbar sind, zeige Hinweistext
+  // Show a message if no hotels are available
   if (list.length === 0) {
     const emptyMessage = document.createElement("div");
     emptyMessage.className = "empty-results-message";
@@ -283,7 +283,7 @@ function renderHotels(list) {
     return;
   }
 
-  // Nur displayedCount Hotels anzeigen
+  // Display only displayedCount hotels
   const visibleHotels = list.slice(0, displayedCount);
 
   visibleHotels.forEach((hotel, index) => {
@@ -317,7 +317,7 @@ function renderHotels(list) {
       </div>
     `;
 
-    // Klick → Modal → Qualtrics
+    // Click → modal → Qualtrics
     card.addEventListener("click", () => {
       hotel.rank = index + 1;
       openHotelModal(hotel, () => {
@@ -332,7 +332,7 @@ function renderHotels(list) {
     container.appendChild(card);
   });
 
-  // Load More Button
+  // Load more button
   const loadMoreDiv = document.createElement("div");
   loadMoreDiv.className = "load-more-container";
   
@@ -359,7 +359,7 @@ function renderHotels(list) {
 }
 
 // =========================
-// Filter anwenden
+// Apply filters
 // =========================
 function applyFilters() {
   let filtered = [...hotels];
@@ -373,10 +373,10 @@ function applyFilters() {
     filtered = filtered.filter(hotel => {
       const attr = hotel.attributes[def.attribute];
 
-      // Sicherheitsnetz
+      // Safety net
       if (attr === undefined) return true;
 
-      // BOOLEAN: nur filtern, wenn aktiv
+      // BOOLEAN: filter only when active
       if (def.type === "boolean") {
         if (value === true) {
           return attr === true;
@@ -424,7 +424,7 @@ function applyFilters() {
 }
 
 // =========================
-// Initialer Render (wichtig!)
+// Initial render (important!)
 // =========================
 renderFilters();
 applyFilters();

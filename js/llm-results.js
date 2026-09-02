@@ -1,5 +1,5 @@
 // ==========================
-// Kontext
+// Context
 // ==========================
 const { session_id, condition, session_start } = window.STUDY;
 
@@ -18,7 +18,7 @@ function getRatingLabel(rating) {
 }
 
 // ==========================
-// Fetch mit Timeout
+// Fetch with timeout
 // ==========================
 function fetchWithTimeout(url, options, timeout = 15000) {
   return Promise.race([
@@ -30,7 +30,7 @@ function fetchWithTimeout(url, options, timeout = 15000) {
 }
 
 // ==========================
-// API-URL dynamisch setzen
+// Set API URL dynamically
 // ==========================
 const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
   ? "http://localhost:3000/api/chat"
@@ -180,7 +180,7 @@ const HOTEL_CONTEXT = buildHotelContext(HOTELS);
 const HOTEL_CONTEXT_NAMES = new Set(HOTEL_CONTEXT.map(hotel => hotel.name));
 
 // ==========================
-// Chatnachrichten Array
+// Chat messages array
 // ==========================
 let messages = [
   { role: "system", content: SYSTEM_PROMPT },
@@ -189,7 +189,7 @@ let messages = [
 ];
 
 // ==========================
-// Chatfunktionen
+// Chat functions
 // ==========================
 function addMessage(text, sender) {
   const div = document.createElement("div");
@@ -228,7 +228,7 @@ function closeChatInputIfLimitReached() {
 }
 
 // ==========================
-// LLM API-Call mit Retry
+// LLM API call with retry
 // ==========================
 async function callLLM(retry = true) {
   showTypingBubble();
@@ -331,7 +331,7 @@ async function handleSend() {
   sendBtn.disabled = false;
   inputField.focus();
 
-  // Prüfen, ob LLM JSON zurückgibt
+  // Check whether the LLM returns JSON
   let parsed;
 
   try {
@@ -372,7 +372,7 @@ async function handleSend() {
 }
 
 // ==========================
-// Hotels rendern + Modal öffnen
+// Render hotels + open modal
 // ==========================
 function renderHotels(hotels) {
   const recommendationSet = document.createElement("div");
@@ -431,6 +431,6 @@ document.getElementById("skip-chat-btn").addEventListener("click", () => {
 });
 
 // ==========================
-// Start Chat: erste Nachricht anzeigen
+// Start chat: display first message
 // ==========================
 addMessage(messages[messages.length - 1].content, "ai");

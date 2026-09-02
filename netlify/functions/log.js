@@ -14,7 +14,7 @@ export async function handler(event) {
 
   if (!db) {
     await client.connect();
-    db = client.db("searchhotels_data"); // DB-Name
+  db = client.db("searchhotels_data"); // Database name
   }
 
   if (body.operation === "update") {

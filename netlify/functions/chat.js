@@ -1,18 +1,18 @@
 import OpenAI from "openai";
 
-// 🔹 OpenAI API Key aus Netlify Environment Variables
+// OpenAI API key from Netlify environment variables
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
 export async function handler(event, context) {
   try {
-    // Nur POST-Anfragen zulassen
+    // Allow POST requests only
     if (event.httpMethod !== "POST") {
       return { statusCode: 405, body: "Method Not Allowed" };
     }
 
-    // JSON aus Request-Body parsen
+    // Parse JSON from request body
     const { messages } = JSON.parse(event.body);
 
     // Call OpenAI API

@@ -1,5 +1,5 @@
 // ==========================
-// Hotel Modal – zentral
+// Hotel modal – centralized
 // ==========================
 function getRatingLabel(rating) {
   if (rating >= 9.0) return "Exceptional";
@@ -8,7 +8,7 @@ function getRatingLabel(rating) {
   return "Pleasant";
 }
 
-// Modal-HTML einmalig erzeugen
+// Create modal HTML once
 (function createHotelModal() {
   const modal = document.createElement("div");
   modal.id = "hotel-modal";
@@ -71,7 +71,7 @@ function getRatingLabel(rating) {
 })();
 
 // ==========================
-// Modal öffnen
+// Open modal
 // ==========================
 function openHotelModal(hotel, onSelect) {
   const modal = document.getElementById("hotel-modal");
@@ -88,7 +88,7 @@ function openHotelModal(hotel, onSelect) {
   const cancelConfirmationBtn = document.getElementById("cancel-confirmation-btn");
   const confirmBookingBtn = document.getElementById("confirm-booking-btn");
 
-  // Inhalte setzen
+  // Set content
   document.getElementById("modal-hotel-name").innerHTML = `
   ${hotel.name} <span class="hotel-stars">${"★".repeat(hotel.attributes.stars)}</span>
   `;
@@ -101,10 +101,10 @@ function openHotelModal(hotel, onSelect) {
   priceEl.textContent = `$${hotel.attributes.price} per night`;
   priceEl.className = "modal-price";
   descEl.textContent = hotel.description || "";
-  // Beschreibung
+  // Description
   descEl.textContent = hotel.description || "";
 
-  // Attribute dynamisch aus ACTIVE_FILTERS
+  // Generate attributes dynamically from ACTIVE_FILTERS
   attrsEl.innerHTML = "";
 
   const ATTR_LABELS = {
@@ -128,7 +128,7 @@ function openHotelModal(hotel, onSelect) {
     bnb: "Bed & Breakfast"
   };
 
-  // Nur Filter anzeigen die nicht schon in meta stehen (price, stars, minRating)
+  // Show only filters not already shown in the meta section (price, stars, minRating)
   const SKIP = ["price", "stars", "minRating"];
 
   (typeof ACTIVE_FILTERS !== "undefined" ? ACTIVE_FILTERS : [])
@@ -157,12 +157,12 @@ function openHotelModal(hotel, onSelect) {
       attrsEl.appendChild(row);
     });
 
-  // Hauptbild
+  // Main image
   const cover =
     hotel.images?.cover || hotel.image || "";
   mainImage.src = cover;
 
-  // Galerie
+  // Gallery
   gallery.innerHTML = "";
   const images =
     hotel.images?.gallery?.length
@@ -181,7 +181,7 @@ function openHotelModal(hotel, onSelect) {
     gallery.appendChild(thumb);
   });
 
-  // Button-Handler
+  // Button handlers
   selectBtn.onclick = () => {
     confirmation.classList.add("open");
   };
@@ -216,12 +216,12 @@ function openHotelModal(hotel, onSelect) {
   closeBtn.onclick = closeHotelModal;
   overlay.onclick = closeHotelModal;
 
-  // Anzeigen
+  // Display
   modal.classList.add("open");
 }
 
 // ==========================
-// Modal schließen
+// Close modal
 // ==========================
 function closeHotelModal() {
   const modal = document.getElementById("hotel-modal");
