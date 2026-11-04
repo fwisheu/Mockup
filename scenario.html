@@ -7,13 +7,12 @@
   <title>Scenario Description</title>
 </head>
 <body>
-<main style="text-align: justify; padding: 60px 20px; max-width: 765px; margin: auto; line-height: 1.6;">
+<main style="text-align: justify; padding: 60px 20px; max-width: 763px; margin: auto; line-height: 1.6;">
   <h1 style="margin-bottom: 16px; font-size: 24px;">Please imagine the following scenario:</h1>
 
   <p>
-  
     You are currently planning a <strong>weekend city trip to Vancouver</strong> together <strong>with your partner</strong>.
-    You want to <strong></>choose an accommodation</strong> that best <strong>matches your personal preferences</strong>. 
+    You want to <strong>choose an accommodation</strong> that best <strong>matches your personal preferences</strong>. 
     When making your choice, consider factors such as price, location, amenities, ratings, and overall fit for your trip.<br>
   </p>
 
@@ -35,19 +34,27 @@
     </button>
   </div>
 
-  <hr style="margin: 32px 0; border-style: dashed;">
+  <div id="test-controls" hidden>
+    <hr style="margin: 32px 0; border-style: dashed;">
 
-  <div style="font-size: 13px; color: #999; margin-bottom: 8px;">Test buttons (will be removed before launch):</div>
-  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <div style="font-size: 13px; color: #999; margin-bottom: 8px;">Test buttons (will be removed before launch):</div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
     <button class="test-btn" data-condition="0" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C0: Filter Low</button>
     <button class="test-btn" data-condition="1" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C1: Filter High</button>
     <button class="test-btn" data-condition="2" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C2: Chat Low</button>
     <button class="test-btn" data-condition="3" style="font-size: 13px; padding: 6px 14px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;">C3: Chat High</button>
+    </div>
   </div>
 </main>
 
 <script src="js/participant.js"></script>
 <script>
+// Keep the test controls in the source, but disable them for the live experiment.
+// Set to true again for a later local test version.
+const ENABLE_TEST_BUTTONS = false;
+
+document.getElementById("test-controls").hidden = !ENABLE_TEST_BUTTONS;
+
 async function startStudy(testCondition = null) {
   const consent = JSON.parse(sessionStorage.getItem("STUDY_CONSENT") || "null");
   if (!consent?.consented) {
@@ -56,7 +63,7 @@ async function startStudy(testCondition = null) {
   }
 
   const participant = window.STUDY_PARTICIPANT;
-  const condition = participant.is_test && Number.isInteger(testCondition)
+  const condition = ENABLE_TEST_BUTTONS && participant.is_test && Number.isInteger(testCondition)
     ? testCondition
     : await getAssignedCondition(participant);
   const session_id = participant.session_id || makeTestId();
@@ -97,9 +104,11 @@ document.getElementById("start-btn").addEventListener("click", () => {
   startStudy();
 });
 
-document.querySelectorAll(".test-btn").forEach(btn => {
-  btn.addEventListener("click", () => startStudy(Number(btn.dataset.condition)));
-});
+if (ENABLE_TEST_BUTTONS) {
+  document.querySelectorAll(".test-btn").forEach(btn => {
+    btn.addEventListener("click", () => startStudy(Number(btn.dataset.condition)));
+  });
+}
 </script>
 </body>
 </html>

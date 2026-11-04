@@ -44,7 +44,7 @@ Your task is to assist the user by choosing the best hotel for their trip.
 Basic trip information:
 1. City trip to Vancouver, Canada.
 2. The user is travelling with his or her partner (double room). 
-3. The trip lasts from Juli 31 to August 2 (2 nights).
+3. The trip lasts 2 nights.
 4. The user is American (currency is USD, distance in miles).
 
 IMPORTANT: 
@@ -101,7 +101,7 @@ Your task is to assist the user by choosing the best hotel for their trip.
 Basic trip information:
 1. City trip to Vancouver, Canada.
 2. The user is travelling with his or her partner (double room). 
-3. The trip lasts from Juli 31 to August 2 (2 nights).
+3. The trip lasts 2 nights.
 4. The user is American (currency is USD, distance in miles).
 
 IMPORTANT: 
@@ -422,13 +422,15 @@ function renderHotels(hotels) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-document.getElementById("skip-chat-btn").addEventListener("click", () => {
-  const testHotels = HOTELS.slice(0, 3);
-  addMessage("Good choice! I have now selected the hotels that fit your preferences best. Please select the one you like best!", "ai");
-  renderHotels(testHotels);
-  const inputWrapper = document.querySelector(".chat-input");
-  if (inputWrapper) inputWrapper.remove();
-});
+if (window.ENABLE_TEST_BUTTONS) {
+  document.getElementById("skip-chat-btn").addEventListener("click", () => {
+    const testHotels = HOTELS.slice(0, 3);
+    addMessage("Good choice! I have now selected the hotels that fit your preferences best. Please select the one you like best!", "ai");
+    renderHotels(testHotels);
+    const inputWrapper = document.querySelector(".chat-input");
+    if (inputWrapper) inputWrapper.remove();
+  });
+}
 
 // ==========================
 // Start chat: display first message
