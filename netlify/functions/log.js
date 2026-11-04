@@ -27,7 +27,11 @@ export async function handler(event) {
     );
     return {
       statusCode: 200,
-      body: JSON.stringify({ ok: true, modifiedCount: result.modifiedCount })
+      body: JSON.stringify({
+        ok: result.matchedCount === 1,
+        matchedCount: result.matchedCount,
+        modifiedCount: result.modifiedCount
+      })
     };
   }
 

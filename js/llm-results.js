@@ -82,7 +82,7 @@ or that he can keep chatting to refine the suggestions. Within the same message 
 }
 
 IF-CASES:
-A) IMPORTANT: If the user has sent his or her 15th message:
+A) IMPORTANT: If the user has sent his or her 20th message:
    Your next response should stop the conversation by explicitly telling the user that he or she has reached the message limit.
    Proceed by recommending the 3 best matching hotels based on the information you have collected so far by using the valid JSON only. 
    Do not ask any more questions after that.
@@ -119,8 +119,8 @@ CONVERSATION FLOW:
 7. You may structure the conversation by grouping preferences to address trade-offs (e.g., price, location, comfort).
 8. Help the user understand trade-offs between options (e.g., price, location, comfort).
 9. After each user response, briefly respond to the user's preference. Do NOT keep summarizing the user's preferences except if you think it is really helpful to guide the user.
-10. Guide the conversation so that you can provide the first set of recommendations after no more than 6-8 messages.
-11. Recommend the first set of hotels once you consider it appropriate, but not later than after a maximum of 6-8 messages.
+10. Guide the conversation so that you can provide the first set of recommendations after no more than 5-7 messages.
+11. Recommend the first set of hotels once you consider it appropriate, but not later than after a maximum of 5-7 messages.
     - Recommend EXACTLY 3 hotels from the provided hotel list. Not more, not less!
     - The selection should plausibly match the user's preferences.
     - Perfect optimization is NOT required.
@@ -184,7 +184,7 @@ const HOTEL_CONTEXT_NAMES = new Set(HOTEL_CONTEXT.map(hotel => hotel.name));
 // ==========================
 let messages = [
   { role: "system", content: SYSTEM_PROMPT },
-  { role: "system", content: "Here is the hotel list:\n" + JSON.stringify(HOTEL_CONTEXT) },
+  { role: "system", content: "Here is the accommodation list:\n" + JSON.stringify(HOTEL_CONTEXT) },
   { role: "assistant", content: "Excellent choice - Vancouver is a great place to stay! Let's find the perfect accomodation for your city trip. Please let me know when you are ready." }
 ];
 

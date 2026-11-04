@@ -190,22 +190,29 @@ function openHotelModal(hotel, onSelect) {
     confirmation.classList.remove("open");
   };
 
-  confirmBookingBtn.onclick = () => {
+  confirmBookingBtn.onclick = async () => {
+    confirmBookingBtn.disabled = true;
     const sessionEnd = new Date().toISOString();
     const timeToDecision = Date.now() - window.STUDY.session_start;
 
-    logStudy("sessions", {
-          session_end: sessionEnd,
-          time_to_decision: timeToDecision,
-          selected_hotel_id: hotel.id,
-          selected_rank: hotel.rank,
-          active_filter_count: (window.STUDY.condition === 0 || window.STUDY.condition === 1) ? ACTIVE_FILTERS.length : null,
-          final_filter_state: (window.STUDY.condition === 0 || window.STUDY.condition === 1) ? { ...filterState } : null
+    const result = await logStudy("sessions", {
+      session_end: sessionEnd,
+      time_to_decision: timeToDecision,
+      selected_hotel_id: hotel.id,
+      selected_rank: hotel.rank,
+      active_filter_count: (window.STUDY.condition === 0 || window.STUDY.condition === 1) ? ACTIVE_FILTERS.length : null,
+      final_filter_state: (window.STUDY.condition === 0 || window.STUDY.condition === 1) ? { ...filterState } : null
     }, "update", {
       prolific_pid: window.STUDY.prolific_pid,
       study_id: window.STUDY.study_id,
       session_id: window.STUDY.session_id
     });
+
+    if (!result?.ok) {
+      confirmBookingBtn.disabled = false;
+      alert("Your choice could not be saved. Please check your connection and try again.");
+      return;
+    }
 
     closeHotelModal();
     if (typeof onSelect === "function") {

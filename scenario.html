@@ -79,21 +79,29 @@ async function startStudy(testCondition = null) {
     condition
   }));
 
-  fetch("/api/log", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      collection: "sessions",
-      data: {
-        prolific_pid: participant.prolific_pid,
-        study_id: participant.study_id,
-        session_id,
-        condition,
-        consent_at: consent.consent_at,
-        session_start: new Date(session_start).toISOString()
-      }
-    })
-  });
+  try {
+    const response = await fetch("/api/log", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        collection: "sessions",
+        data: {
+          prolific_pid: participant.prolific_pid,
+          study_id: participant.study_id,
+          session_id,
+          condition,
+          consent_at: consent.consent_at,
+          session_start: new Date(session_start).toISOString()
+        }
+      })
+    });
+
+    if (!response.ok) throw new Error(`Session start could not be saved (${response.status})`);
+  } catch (error) {
+    console.error(error);
+    alert("The session could not be started. Please check your connection and try again.");
+    return;
+  }
 
   window.location.href = (condition === 0 || condition === 1)
     ? "results-filter.html"
