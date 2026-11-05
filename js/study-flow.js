@@ -60,6 +60,7 @@ function studyMetadata() {
     prolific_pid: STUDY.prolific_pid,
     study_id: STUDY.study_id,
     session_id: STUDY.session_id,
+    attempt_id: STUDY.attempt_id,
     condition: STUDY.condition
   };
 }

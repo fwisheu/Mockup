@@ -13,6 +13,13 @@ function makeTestId() {
   return `TEST${String(digits).padStart(6, "0")}`;
 }
 
+function makeAttemptId() {
+  const digits = typeof crypto !== "undefined" && crypto.getRandomValues
+    ? crypto.getRandomValues(new Uint32Array(2)).join("")
+    : `${Date.now()}${Math.floor(Math.random() * 1000000)}`;
+  return `ATTEMPT${digits}`;
+}
+
 function urlValue(name) {
   const params = new URLSearchParams(window.location.search);
   const wanted = name.toLowerCase();

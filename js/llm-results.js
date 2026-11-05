@@ -234,7 +234,7 @@ async function callLLM(retry = true) {
   showTypingBubble();
 
   try {
-    await delay(500 + Math.random() * 600);
+    await delay(500 + Math.random() * 500);
 
     const res = await fetchWithTimeout(
       API_URL,

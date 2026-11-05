@@ -68,6 +68,7 @@ async function startStudy(testCondition = null) {
     ? testCondition
     : await getAssignedCondition(participant);
   const session_id = participant.session_id || makeTestId();
+  const attempt_id = makeAttemptId();
   // The measured study time begins here, after consent and after the task instructions.
   const session_start = Date.now();
 
@@ -75,6 +76,7 @@ async function startStudy(testCondition = null) {
     prolific_pid: participant.prolific_pid,
     study_id: participant.study_id,
     session_id,
+    attempt_id,
     session_start,
     consent_at: consent.consent_at,
     condition
@@ -90,6 +92,7 @@ async function startStudy(testCondition = null) {
           prolific_pid: participant.prolific_pid,
           study_id: participant.study_id,
           session_id,
+          attempt_id,
           condition,
           consent_at: consent.consent_at,
           session_start: new Date(session_start).toISOString()

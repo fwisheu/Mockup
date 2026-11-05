@@ -205,7 +205,8 @@ function openHotelModal(hotel, onSelect) {
     }, "update", {
       prolific_pid: window.STUDY.prolific_pid,
       study_id: window.STUDY.study_id,
-      session_id: window.STUDY.session_id
+      session_id: window.STUDY.session_id,
+      attempt_id: window.STUDY.attempt_id
     });
 
     if (!result?.ok) {
