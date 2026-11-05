@@ -1,6 +1,9 @@
 async function redirectIfSessionCompleted() {
   const participant = window.STUDY_PARTICIPANT;
-  if (!participant?.prolific_pid || !participant.study_id || !participant.session_id) {
+  const storedStudy = JSON.parse(sessionStorage.getItem("STUDY_SESSION") || "null");
+  const sessionId = participant?.session_id || storedStudy?.session_id;
+
+  if (!participant?.prolific_pid || !participant.study_id || !sessionId) {
     return false;
   }
 
@@ -12,8 +15,7 @@ async function redirectIfSessionCompleted() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         prolific_pid: participant.prolific_pid,
-        study_id: participant.study_id,
-        session_id: participant.session_id
+        study_id: participant.study_id
       })
     });
 
@@ -25,8 +27,10 @@ async function redirectIfSessionCompleted() {
       const params = new URLSearchParams({
         PROLIFIC_PID: participant.prolific_pid,
         STUDY_ID: participant.study_id,
-        SESSION_ID: participant.session_id,
-        CONDITION: condition
+        SESSION_ID: sessionId,
+        CONDITION: Number.isInteger(storedStudy?.condition)
+          ? storedStudy.condition
+          : condition
       });
 
       window.location.replace(

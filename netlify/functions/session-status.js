@@ -11,12 +11,12 @@ export async function handler(event) {
   }
 
   try {
-    const { prolific_pid, study_id, session_id } = JSON.parse(event.body || "{}");
+    const { prolific_pid, study_id } = JSON.parse(event.body || "{}");
 
-    if (!prolific_pid || !study_id || !session_id) {
+    if (!prolific_pid || !study_id) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "prolific_pid, study_id and session_id are required" })
+        body: JSON.stringify({ error: "prolific_pid and study_id are required" })
       };
     }
 
@@ -29,7 +29,6 @@ export async function handler(event) {
       {
         prolific_pid,
         study_id,
-        session_id,
         session_end: { $exists: true },
         selected_hotel_id: { $exists: true }
       },

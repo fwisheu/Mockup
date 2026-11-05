@@ -32,8 +32,7 @@ async function checkSessionCompleted() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         prolific_pid: STUDY.prolific_pid,
-        study_id: STUDY.study_id,
-        session_id: STUDY.session_id
+        study_id: STUDY.study_id
       })
     });
 
